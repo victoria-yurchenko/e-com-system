@@ -1,51 +1,38 @@
 ﻿using Application.DTOs;
 using Application.Interfaces;
-using Application.Interfaces;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     [ApiController]
     public class AuthController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
         private readonly IJwtService _jwtService;
         private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly IAuthService _authService;
 
-        public AuthController(IUserRepository userRepository, IPasswordHasher<User> passwordHasher)
+        public AuthController(IUserRepository userRepository, IPasswordHasher<User> passwordHasher, IAuthService authService)
         {
             _userRepository = userRepository;
             _passwordHasher = passwordHasher;
+            _authService = authService;
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterUserDto registerDto)
         {
-            var existingUser = await _userRepository.GetByEmailAsync(registerDto.Email);
-            if (existingUser != null)
-            {
-                return BadRequest("Email is already in use.");
-            }
-
-            var user = new User
-            {
-                Email = registerDto.Email,
-                PasswordHash = _passwordHasher.HashPassword(null, registerDto.Password),
-                CreatedAt = DateTime.UtcNow
-            };
-
-            await _userRepository.AddAsync(user);
-
+            await _authService.RegisterUserAsync(registerDto.Email, registerDto.Password);
             return Ok("User registered successfully.");
         }
 
         [HttpPost("login")]
-        public IActionResult Login(string userId, string email)
+        public IActionResult Login([FromBody] LoginUserDto loginUserDto)
         {
-            var token = _jwtService.GenerateToken(userId, email);
+            var token = _authService.AuthenticateUserAsync(loginUserDto.Email, loginUserDto.Password);
             return Ok(new { Token = token });
         }
     }

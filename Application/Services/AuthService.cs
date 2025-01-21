@@ -1,9 +1,8 @@
 ﻿using Application.Interfaces;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
-using Presentation.Services.Interfaces;
 
-namespace Presentation.Services
+namespace Application.Services
 {
     public class AuthService : IAuthService
     {
@@ -20,7 +19,19 @@ namespace Presentation.Services
 
         public async Task<string> AuthenticateUserAsync(string email, string password)
         {
-            throw new NotImplementedException();
+            var user = await _userRepository.GetByEmailAsync(email);
+            if (user == null)
+            {
+                throw new Exception("Invalid credentials.");
+            }
+
+            var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
+            if (result != PasswordVerificationResult.Success)
+            {
+                throw new Exception("Invalid credentials.");
+            }
+
+            return _jwtService.GenerateToken(user.Id.ToString(), user.Email);
         }
 
         public async Task<string> RegisterUserAsync(string email, string password)
