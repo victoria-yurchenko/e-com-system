@@ -1,0 +1,23 @@
+[33mcommit e2b7a297b7ec1dc78831d9dd2b51f8e92fdfd5a8[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m
+Author: xxwonderwallxx <vika010501@gmail.com>
+Date:   Sat Jan 25 02:21:50 2025 -0500
+
+    Analytics feature
+
+[33mcommit e0b1354c1fc4f121baabe086e427f536477c4abd[m
+Author: xxwonderwallxx <vika010501@gmail.com>
+Date:   Sat Jan 25 02:11:42 2025 -0500
+
+    Subscription and payment options
+
+[33mcommit 2e4f7c2b4c135f9fee3bd0badd002fbb2224ebb2[m
+Author: xxwonderwallxx <vika010501@gmail.com>
+Date:   Tue Jan 21 03:22:39 2025 -0500
+
+    + authentication and authorization; possibility to get subscriptions from repository
+
+[33mcommit 25c0629b3afd79a7d97492c14ecbfb6baf47133b[m
+Author: xxwonderwallxx <vika010501@gmail.com>
+Date:   Tue Jan 21 02:28:43 2025 -0500
+
+    Init
