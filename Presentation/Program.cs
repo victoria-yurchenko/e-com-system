@@ -30,6 +30,8 @@ namespace Presentation
             builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
             builder.Services.AddScoped<IAdminService, AdminService>();
             builder.Services.AddScoped<IAdminSubscriptionRepository, AdminSubscriptionRepository>();
+            builder.Services.AddScoped<IAnalyticsRepository, AnalyticsRepository>();
+            builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 
             builder.Services.AddHostedService<SubscriptionRenewalService>();
 
