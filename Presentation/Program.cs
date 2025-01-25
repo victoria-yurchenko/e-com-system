@@ -1,7 +1,8 @@
-
+using Application.BackgroundServices;
 using Application.Interfaces;
 using Application.Services;
 using Infrastructure.DatabaseContext;
+using Infrastructure.PaymentGateways;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,15 @@ namespace Presentation
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
             builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
+            builder.Services.AddScoped<IPaymentGateway, StripePaymentGateway>();
+            builder.Services.AddScoped<INotificationService, NotificationService>();
+            builder.Services.AddScoped<IPaymentService, PaymentService>();
+            builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+            builder.Services.AddScoped<IAdminService, AdminService>();
+            builder.Services.AddScoped<IAdminSubscriptionRepository, AdminSubscriptionRepository>();
+
+            builder.Services.AddHostedService<SubscriptionRenewalService>();
 
             builder.Services.AddControllers();
 

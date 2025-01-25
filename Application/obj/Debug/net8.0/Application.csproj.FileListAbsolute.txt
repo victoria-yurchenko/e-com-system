@@ -13,3 +13,5 @@ E:\_work\portfolio_projects\SubscriptionManagementSystemApi\Application\obj\Debu
 E:\_work\portfolio_projects\SubscriptionManagementSystemApi\Application\bin\Debug\net8.0\Domain.dll
 E:\_work\portfolio_projects\SubscriptionManagementSystemApi\Application\bin\Debug\net8.0\Domain.pdb
 E:\_work\portfolio_projects\SubscriptionManagementSystemApi\Application\obj\Debug\net8.0\Applicat.44B5EDA2.Up2Date
+E:\_work\portfolio_projects\SubscriptionManagementSystemApi\Application\obj\Debug\net8.0\Application.Resources.Notifications.resources
+E:\_work\portfolio_projects\SubscriptionManagementSystemApi\Application\obj\Debug\net8.0\Application.csproj.GenerateResource.cache

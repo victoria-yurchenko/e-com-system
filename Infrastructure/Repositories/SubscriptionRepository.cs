@@ -18,5 +18,10 @@ namespace Infrastructure.Repositories
         {
             return await _context.Subscriptions.ToListAsync();
         }
+
+        public async Task<Subscription> GetByIdAsync(Guid id)
+        {
+            return await _context.Subscriptions.Where(s => s.Id == id).FirstOrDefaultAsync();
+        }
     }
 }

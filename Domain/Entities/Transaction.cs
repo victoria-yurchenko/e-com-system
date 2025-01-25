@@ -10,10 +10,13 @@ namespace Domain.Entities
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public Guid UserId { get; set; }
-        public User User { get; set; }
         public decimal Amount { get; set; }
         public string PaymentStatus { get; set; }
         public string PaymentProvider { get; set; }
-        public DateTime CreatedAt { get; set; }
+        public string PaymentMethod { get; set; }
+        public string TransactionId { get; set; } // Transaction ID from outer payment system
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+       
+        public User User { get; set; }
     }
 }
