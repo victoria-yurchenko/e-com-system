@@ -1,0 +1,27 @@
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { Box, Container, Button } from '@mui/material';
+import Text from './Text';
+
+const TopNavBar = () => {
+    const { i18n } = useTranslation();
+
+    const changeLanguage = (lng) => {
+        i18n.changeLanguage(lng);
+    };
+
+    return (
+        <Box sx={{ textAlign: 'center', my: 4, backgroundColor: " #002c3d" }}>
+            <Container style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px' }}>
+                <Button onClick={() => changeLanguage('en')} sx={{ color: '#e9d8a6', fontFamily: 'Bahnschrift' }}>
+                    eng
+                </Button>
+                <Button onClick={() => changeLanguage('ru')} sx={{ color: '#e9d8a6', fontFamily: 'Bahnschrift' }}>
+                    rus
+                </Button>
+            </Container>
+        </Box>
+    );
+};
+
+export default TopNavBar;

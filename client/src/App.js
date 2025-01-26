@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import HomePage from './pages/Homepage';
 
@@ -12,13 +12,11 @@ const App = () => {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px' }}>
-        <button onClick={() => changeLanguage('en')}>English</button>
-        <button onClick={() => changeLanguage('ru')}>Русский</button>
-      </div>
+      <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
       </Routes>
+    </BrowserRouter>
     </div>
   );
 };
