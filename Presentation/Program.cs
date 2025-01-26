@@ -5,6 +5,7 @@ using Infrastructure.DatabaseContext;
 using Infrastructure.PaymentGateways;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -31,8 +32,12 @@ namespace Presentation
             builder.Services.AddScoped<IAdminSubscriptionRepository, AdminSubscriptionRepository>();
             builder.Services.AddScoped<IAnalyticsRepository, AnalyticsRepository>();
             builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
+            builder.Services.AddScoped<IUserSubscriptionRepository, UserSubscriptionRepository>();
 
             builder.Services.AddHostedService<SubscriptionRenewalService>();
+            builder.Services.AddDataProtection()
+                .PersistKeysToFileSystem(new DirectoryInfo(@"/root/.aspnet/DataProtection-Keys"))
+                .SetApplicationName("SubscriptionManagementSystem");
 
             builder.Services.AddControllers();
 

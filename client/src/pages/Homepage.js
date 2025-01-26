@@ -1,76 +1,78 @@
 import React from 'react';
-import { Box, Typography, Container, Grid, Card, CardContent } from '@mui/material';
+import { useTranslation } from 'react-i18next';
+import { Box, Typography, Container, Grid, Card, CardContent, Grid2 } from '@mui/material';
 import { Star, CreditCard, Notifications } from '@mui/icons-material';
 
 const HomePage = () => {
+  const { t } = useTranslation();
+
   return (
     <Container>
       <Box sx={{ textAlign: 'center', my: 4 }}>
         <Typography variant="h3" gutterBottom>
-          Manage Your Subscriptions Easily and Effectively
+          {t('welcome')}
+        </Typography>
+        <Typography variant="h3" color="textSecondary">
+          {t('about.title')}
         </Typography>
         <Typography variant="h5" color="textSecondary">
-          A platform for managing subscriptions with flexible plans, seamless payment integrations, and a user-friendly interface.
+          {t('about.description')}
         </Typography>
       </Box>
 
-      {/* Секция преимуществ */}
       <Box sx={{ my: 4 }}>
         <Typography variant="h4" gutterBottom>
-          Advantages
+          {t('advantages.title')}
         </Typography>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={4}>
+        <Grid2 container spacing={3}>
+          <Grid2 item xs={12} md={4}>
             <Card>
               <CardContent>
                 <Star fontSize="large" color="primary" />
                 <Typography variant="h6" gutterBottom>
-                  Easy subscription setup.
-                </Typography>
+                  {t('advantages.convenience')}                </Typography>
                 <Typography variant="body1" color="textSecondary">
-                  Flexible plans: Free, Premium, and Business.
-                </Typography>
+                  {t('advantages.convenience_description')}                </Typography>
               </CardContent>
             </Card>
-          </Grid>
-          <Grid item xs={12} md={4}>
+          </Grid2>
+          <Grid2 item xs={12} md={4}>
             <Card>
               <CardContent>
                 <CreditCard fontSize="large" color="primary" />
                 <Typography variant="h6" gutterBottom>
-                  Безопасные платежи
+                  {t('advantages.stripe')}
                 </Typography>
                 <Typography variant="body1" color="textSecondary">
-                  Secure payments using Stripe.
-                </Typography>
+                  {t('advantages.stripe_description')}                </Typography>
               </CardContent>
             </Card>
-          </Grid>
-          <Grid item xs={12} md={4}>
+          </Grid2>
+          <Grid2 item xs={12} md={4}>
             <Card>
               <CardContent>
                 <Notifications fontSize="large" color="primary" />
                 <Typography variant="h6" gutterBottom>
-                  Уведомления
+                  {t('advantages.support')}
                 </Typography>
                 <Typography variant="body1" color="textSecondary">
-                  Получайте напоминания об окончании срока подписки.
-                </Typography>
+                  {t('advantages.support_description')}                </Typography>
               </CardContent>
             </Card>
-          </Grid>
-        </Grid>
+          </Grid2>
+        </Grid2>
       </Box>
 
       {/* О нас */}
       <Box sx={{ my: 4 }}>
         <Typography variant="h4" gutterBottom>
-          О нас
+          {t('reviews.title')}
         </Typography>
-        <Typography variant="body1" color="textSecondary">
-          Наша система подписок предоставляет пользователям простой и интуитивный способ управления своими тарифами,
-          платежами и уведомлениями. Мы объединяем мощную архитектуру и современные технологии, чтобы ваши подписки стали
-          удобными и прозрачными.
+        <Typography variant="h4" gutterBottom>
+          {t('reviews.review1')}
+        </Typography>
+        <Typography variant="h4" gutterBottom>
+          {t('reviews.review2')}
         </Typography>
       </Box>
     </Container>

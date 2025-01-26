@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 services:
   backend:
     build:
@@ -13,7 +13,9 @@ services:
       - sqlserver
     networks:
       - app_network
-      
+    volumes:
+      - data-protection-keys:/root/.aspnet/DataProtection-Keys
+
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: sqlserver
@@ -35,5 +37,9 @@ services:
       - backend
     networks:
       - app_network
+
 networks:
   app_network:
+
+volumes:
+  data-protection-keys:

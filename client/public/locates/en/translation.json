@@ -1,0 +1,21 @@
+{
+    "welcome": "Welcome to the Subscription System",
+    "about": {
+        "title": "About Us",
+        "description": "Our platform provides an easy way to manage subscriptions. We offer simple payment system integration, user data management, and more."
+    },
+    "advantages": {
+        "title": "Advantages",
+        "convenience": "Convenience",
+        "convenience_description": "Easily manage subscriptions through a single dashboard.",
+        "stripe": "Stripe Integration",
+        "stripe_description": "Support for payments through Stripe for your convenience.",
+        "support": "Support",
+        "support_description": "We are always ready to help with any questions."
+    },
+    "reviews": {
+        "title": "Reviews",
+        "review1": "“Amazing platform! Everything is simple and clear.” — Alexander",
+        "review2": "“Stripe integration works perfectly. Highly recommend!” — Maria"
+    }
+}
