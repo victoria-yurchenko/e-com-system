@@ -41,8 +41,10 @@ services:
     volumes:
       - ./client:/app
       - /app/node_modules
+      - ./jsconfig.json:/app/jsconfig.json:ro
     environment:
       CHOKIDAR_USEPOLLING: "true"
+      WATCHPACK_POLLING: "true"
     command: ["npm", "start"]
 
 networks:

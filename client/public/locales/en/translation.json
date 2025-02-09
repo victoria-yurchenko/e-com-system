@@ -17,5 +17,13 @@
         "title": "Reviews",
         "review1": "“Amazing platform! Everything is simple and clear.” — Alexander",
         "review2": "“Stripe integration works perfectly. Highly recommend!” — Maria"
+    }, 
+    "auth": {
+        "login": "Login",
+        "signup": "Sign Up",
+        "signin": "Sign In",
+        "forgot_password": "Forgot Password?",
+        "reset_password": "Reset Password",
+        "reset_password_sent": "Password reset link sent successfully. Check your inbox."
     }
 }

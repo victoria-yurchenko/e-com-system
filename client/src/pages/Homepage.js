@@ -1,16 +1,17 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Box, Typography, Container, Card, CardContent, Grid2 } from '@mui/material';
+import { Box, Container, Card, CardContent, Grid2 } from '@mui/material';
 import { Star, CreditCard, Notifications } from '@mui/icons-material';
-import TopNavBar from '../components/common/TopNavBar';
 import Text from '../components/common/Text';
+import BusinessManThumbsUp from './../assets/images/business_man_thumbs_up.jpg';
+import HappyBusinessWoman from './../assets/images/happy_business_woman.jpg';
+import ImageCard from '../components/common/ImageCard';
 
 const HomePage = () => {
   const { t } = useTranslation();
 
   return (
-    <>
-      <TopNavBar />
+    <Grid2>
       <Container>
         <Box sx={{ textAlign: 'center', my: 4 }}>
           <Text variant="h3">
@@ -30,7 +31,7 @@ const HomePage = () => {
 
           <Grid2 container spacing={3}>
             <Grid2 item xs={12} md={4}>
-              <Card>
+              <Card sx={{width: '100%'}}>
                 <CardContent>
                   <Star fontSize="large" color="primary" />
                   <Text variant="h6" gutterBottom>
@@ -75,15 +76,11 @@ const HomePage = () => {
           <Text variant="h4" gutterBottom>
             {t('reviews.title')}
           </Text>
-          <Text variant="h5" gutterBottom>
-            {t('reviews.review1')}
-          </Text>
-          <Text variant="h5" gutterBottom>
-            {t('reviews.review2')}
-          </Text>
+          <ImageCard text={t("reviews.review1")} imgSrc={BusinessManThumbsUp} imgAlt="Business Man Thumbs Up" imgHeight="350" isImgFirst={false}/>
+          <ImageCard text={t("reviews.review2")} imgSrc={HappyBusinessWoman} imgAlt="Happy business woman" imgHeight="350" isImgFirst={true}/>         
         </Box>
       </Container>
-    </>
+    </Grid2>
   );
 };
 
