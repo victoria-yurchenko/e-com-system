@@ -8,7 +8,7 @@ services:
       - "5000:5000"
     environment:
       ASPNETCORE_ENVIRONMENT: Production
-      ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=SubscriptionDb;User Id=sa;Password=Strong@Passw0rd;"
+      ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=SubscriptionDb;User Id=sa;Password=Strong@Passw0rd;TrustServerCertificate=true;"
     depends_on:
       - sqlserver
     networks:
