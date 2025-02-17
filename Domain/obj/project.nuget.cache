@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "me5AMOKsqTk=",
+  "dgSpecHash": "F5/O91BIn5w=",
   "success": true,
-  "projectFilePath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Domain\\Domain.csproj",
+  "projectFilePath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Domain\\Domain.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ACER\\.nuget\\packages\\fluentvalidation\\11.11.0\\fluentvalidation.11.11.0.nupkg.sha512",
     "C:\\Users\\ACER\\.nuget\\packages\\mediatr\\12.4.1\\mediatr.12.4.1.nupkg.sha512",

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Presentation\\Presentation.csproj": {}
+    "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Presentation\\Presentation.csproj": {}
   },
   "projects": {
-    "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Application\\Application.csproj": {
+    "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Application\\Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Application\\Application.csproj",
+        "projectUniqueName": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Application\\Application.csproj",
         "projectName": "Application",
-        "projectPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Application\\Application.csproj",
+        "projectPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Application\\Application.csproj",
         "packagesPath": "C:\\Users\\ACER\\.nuget\\packages\\",
-        "outputPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Application\\obj\\",
+        "outputPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -32,8 +32,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Domain\\Domain.csproj": {
-                "projectPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Domain\\Domain.csproj"
+              "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Domain\\Domain.csproj": {
+                "projectPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Domain\\Domain.csproj"
               }
             }
           }
@@ -79,18 +79,18 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.103/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Domain\\Domain.csproj": {
+    "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Domain\\Domain.csproj",
+        "projectUniqueName": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Domain\\Domain.csproj",
+        "projectPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Domain\\Domain.csproj",
         "packagesPath": "C:\\Users\\ACER\\.nuget\\packages\\",
-        "outputPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Domain\\obj\\",
+        "outputPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -154,22 +154,25 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.103/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Infrastructure\\Infrastructure.csproj": {
+    "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Infrastructure\\Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Infrastructure\\Infrastructure.csproj",
+        "projectUniqueName": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Infrastructure\\Infrastructure.csproj",
         "projectName": "Infrastructure",
-        "projectPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Infrastructure\\Infrastructure.csproj",
+        "projectPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Infrastructure\\Infrastructure.csproj",
         "packagesPath": "C:\\Users\\ACER\\.nuget\\packages\\",
-        "outputPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Infrastructure\\obj\\",
+        "outputPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -190,11 +193,11 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Application\\Application.csproj": {
-                "projectPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Application\\Application.csproj"
+              "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Application\\Application.csproj": {
+                "projectPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Application\\Application.csproj"
               },
-              "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Domain\\Domain.csproj": {
-                "projectPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Domain\\Domain.csproj"
+              "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Domain\\Domain.csproj": {
+                "projectPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Domain\\Domain.csproj"
               }
             }
           }
@@ -219,7 +222,15 @@
               "target": "Package",
               "version": "[4.9.0, )"
             },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.12, )"
+            },
             "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.12, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
               "target": "Package",
               "version": "[8.0.12, )"
             },
@@ -258,18 +269,18 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.103/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Presentation\\Presentation.csproj": {
+    "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Presentation\\Presentation.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Presentation\\Presentation.csproj",
+        "projectUniqueName": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Presentation\\Presentation.csproj",
         "projectName": "Presentation",
-        "projectPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Presentation\\Presentation.csproj",
+        "projectPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Presentation\\Presentation.csproj",
         "packagesPath": "C:\\Users\\ACER\\.nuget\\packages\\",
-        "outputPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Presentation\\obj\\",
+        "outputPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Presentation\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -290,14 +301,14 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Application\\Application.csproj": {
-                "projectPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Application\\Application.csproj"
+              "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Application\\Application.csproj": {
+                "projectPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Application\\Application.csproj"
               },
-              "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Domain\\Domain.csproj": {
-                "projectPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Domain\\Domain.csproj"
+              "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Domain\\Domain.csproj": {
+                "projectPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Domain\\Domain.csproj"
               },
-              "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Infrastructure\\Infrastructure.csproj": {
-                "projectPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Infrastructure\\Infrastructure.csproj"
+              "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Infrastructure\\Infrastructure.csproj": {
+                "projectPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Infrastructure\\Infrastructure.csproj"
               }
             }
           }
@@ -327,6 +338,10 @@
               "version": "[11.3.0, )"
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.12, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
               "version": "[8.0.12, )"
             },
@@ -364,7 +379,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.103/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

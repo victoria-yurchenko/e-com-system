@@ -10,3 +10,15 @@ E:\_work\portfolio_projects\SubscriptionManagementSystemApi\Domain\obj\Debug\net
 E:\_work\portfolio_projects\SubscriptionManagementSystemApi\Domain\obj\Debug\net8.0\refint\Domain.dll
 E:\_work\portfolio_projects\SubscriptionManagementSystemApi\Domain\obj\Debug\net8.0\Domain.pdb
 E:\_work\portfolio_projects\SubscriptionManagementSystemApi\Domain\obj\Debug\net8.0\ref\Domain.dll
+E:\_work\portfolio_projects\SubscriptionManagementSystem\Domain\bin\Debug\net8.0\Domain.deps.json
+E:\_work\portfolio_projects\SubscriptionManagementSystem\Domain\bin\Debug\net8.0\Domain.dll
+E:\_work\portfolio_projects\SubscriptionManagementSystem\Domain\bin\Debug\net8.0\Domain.pdb
+E:\_work\portfolio_projects\SubscriptionManagementSystem\Domain\obj\Debug\net8.0\Domain.csproj.AssemblyReference.cache
+E:\_work\portfolio_projects\SubscriptionManagementSystem\Domain\obj\Debug\net8.0\Domain.GeneratedMSBuildEditorConfig.editorconfig
+E:\_work\portfolio_projects\SubscriptionManagementSystem\Domain\obj\Debug\net8.0\Domain.AssemblyInfoInputs.cache
+E:\_work\portfolio_projects\SubscriptionManagementSystem\Domain\obj\Debug\net8.0\Domain.AssemblyInfo.cs
+E:\_work\portfolio_projects\SubscriptionManagementSystem\Domain\obj\Debug\net8.0\Domain.csproj.CoreCompileInputs.cache
+E:\_work\portfolio_projects\SubscriptionManagementSystem\Domain\obj\Debug\net8.0\Domain.dll
+E:\_work\portfolio_projects\SubscriptionManagementSystem\Domain\obj\Debug\net8.0\refint\Domain.dll
+E:\_work\portfolio_projects\SubscriptionManagementSystem\Domain\obj\Debug\net8.0\Domain.pdb
+E:\_work\portfolio_projects\SubscriptionManagementSystem\Domain\obj\Debug\net8.0\ref\Domain.dll

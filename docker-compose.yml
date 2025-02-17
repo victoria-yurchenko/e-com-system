@@ -1,5 +1,26 @@
 version: '3.9'
 services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    ports:
+      - "1433:1433"
+    environment:
+      SA_PASSWORD: "Strong@Passw0rd"
+      ACCEPT_EULA: "Y"
+    networks:
+      - app_network
+
+  migrations:
+    build:
+      context: .
+      dockerfile: Dockerfile.migrations
+    depends_on:
+      - sqlserver
+    networks:
+      - app_network
+    command: "bash -c '/wait-for-it.sh sqlserver:1433 -t 60 && dotnet ef database update --project Infrastructure/Infrastructure.csproj --startup-project Presentation/Presentation.csproj --connection \"Server=sqlserver,1433;Database=SubscriptionDb;User Id=sa;Password=Strong@Passw0rd;TrustServerCertificate=true;\" && echo done'"
+
   backend:
     build:
       context: .
@@ -11,21 +32,12 @@ services:
       ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=SubscriptionDb;User Id=sa;Password=Strong@Passw0rd;TrustServerCertificate=true;"
     depends_on:
       - sqlserver
+      - migrations
     networks:
       - app_network
     volumes:
       - data-protection-keys:/root/.aspnet/DataProtection-Keys
-
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: sqlserver
-    ports:
-      - "1433:1433"
-    environment:
-      SA_PASSWORD: "Strong@Passw0rd"
-      ACCEPT_EULA: "Y"
-    networks:
-      - app_network
+    entrypoint: ["dotnet", "Presentation.dll"]
 
   frontend:
     build:

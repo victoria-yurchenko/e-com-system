@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Domain\\Domain.csproj": {}
+    "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Domain\\Domain.csproj": {}
   },
   "projects": {
-    "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Domain\\Domain.csproj": {
+    "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Domain\\Domain.csproj",
+        "projectUniqueName": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Domain\\Domain.csproj",
+        "projectPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Domain\\Domain.csproj",
         "packagesPath": "C:\\Users\\ACER\\.nuget\\packages\\",
-        "outputPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystemApi\\Domain\\obj\\",
+        "outputPath": "E:\\_work\\portfolio_projects\\SubscriptionManagementSystem\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -75,11 +75,14 @@
           "assetTargetFallback": true,
           "warn": true,
           "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.103/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
