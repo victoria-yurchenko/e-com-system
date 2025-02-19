@@ -1,18 +1,32 @@
 FROM mcr.microsoft.com/mssql/server:2022-latest
-ENV ACCEPT_EULA=Y
 
-RUN apt-get update && \
-    apt-get install -y curl gnupg apt-utils && \
-    curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - && \
-    curl https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/prod.list > /etc/apt/sources.list.d/mssql-tools.list && \
-    apt-get update && \
-    apt-get install -y msodbcsql17 mssql-tools netcat
+ENV ACCEPT_EULA=Y
+ENV SA_PASSWORD=${SA_PASSWORD}
+ENV MSSQL_PID=${MSSQL_PID}
+
+USER root
+
+RUN apt-get update && apt-get install -y \
+    curl \
+    gnupg \
+    software-properties-common \
+    apt-utils \
+    libodbc1 \
+    unixodbc \
+    unixodbc-dev \
+    && curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
+    && curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list > /etc/apt/sources.list.d/mssql-tools.list \
+    && apt-get update \
+    && ACCEPT_EULA=Y apt-get install -y msodbcsql17 mssql-tools \
+    && echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc \
+    && apt-get clean
 
 # Add mssql-tools to the PATH
 ENV PATH="$PATH:/opt/mssql-tools/bin"
 
-ENV SA_PASSWORD=Strong@Passw0rd
-ENV MSSQL_PID=Developer
+USER mssql
 
-COPY init.sql /init.sql
-CMD /opt/mssql/bin/sqlservr & /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'Strong@Passw0rd' -i /init.sql
+HEALTHCHECK --interval=10s --timeout=3s --retries=10 \
+    CMD /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P '${SA_PASSWORD}' -Q "SELECT 1" || exit 1
+
+CMD /bin/bash -c "sleep 20 && /opt/mssql/bin/sqlservr"

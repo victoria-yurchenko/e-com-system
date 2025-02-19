@@ -37,6 +37,11 @@ namespace Presentation
             builder.Services.AddScoped<IUserSubscriptionRepository, UserSubscriptionRepository>();
 
             builder.Services.AddHostedService<SubscriptionRenewalService>();
+            builder.Services.Configure<HostOptions>(options =>
+            {
+                options.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore;
+            });
+
             builder.Services.AddDataProtection()
                 .PersistKeysToFileSystem(new DirectoryInfo(@"/root/.aspnet/DataProtection-Keys"))
                 .SetApplicationName("SubscriptionManagementSystem");
