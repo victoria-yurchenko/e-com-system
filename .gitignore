@@ -7,3 +7,5 @@ topS
 **/bin/
 **/node_modules/
 **/packages/
+*.log
+**.log
