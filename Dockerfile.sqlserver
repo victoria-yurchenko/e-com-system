@@ -1,7 +1,33 @@
 FROM mcr.microsoft.com/mssql/server:2022-latest
-ENV ACCEPT_EULA=Y
-ENV SA_PASSWORD=Strong@Passw0rd
-ENV MSSQL_PID=Developer
 
-COPY init.sql /init.sql
-CMD /opt/mssql/bin/sqlservr --attach-db /init.sql
+ENV ACCEPT_EULA=Y
+ENV SA_PASSWORD=${SA_PASSWORD}
+
+USER root
+
+RUN apt-get update && apt-get install -y \
+    apt-utils \
+    gnupg \
+    curl \
+    libodbc1 \
+    unixodbc \
+    unixodbc-dev
+
+RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
+    && curl -fsSL https://packages.microsoft.com/config/ubuntu/20.04/prod.list > /etc/apt/sources.list.d/mssql-tools.list \
+    && apt-get update \
+    && ACCEPT_EULA=Y apt-get install -y msodbcsql17 mssql-tools
+    
+RUN echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> /etc/bash.bashrc 
+
+RUN apt-get clean
+
+# Add mssql-tools to the PATH
+ENV PATH="$PATH:/opt/mssql-tools/bin"
+
+USER mssql
+
+HEALTHCHECK --interval=10s --timeout=3s --retries=10 \
+    CMD /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P '${SA_PASSWORD}' -Q "SELECT 1" || exit 1
+
+CMD /bin/bash -c "sleep 20 && /opt/mssql/bin/sqlservr"

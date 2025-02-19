@@ -6,6 +6,8 @@ using Infrastructure.PaymentGateways;
 using Infrastructure.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Identity;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -35,6 +37,11 @@ namespace Presentation
             builder.Services.AddScoped<IUserSubscriptionRepository, UserSubscriptionRepository>();
 
             builder.Services.AddHostedService<SubscriptionRenewalService>();
+            builder.Services.Configure<HostOptions>(options =>
+            {
+                options.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore;
+            });
+
             builder.Services.AddDataProtection()
                 .PersistKeysToFileSystem(new DirectoryInfo(@"/root/.aspnet/DataProtection-Keys"))
                 .SetApplicationName("SubscriptionManagementSystem");
@@ -45,7 +52,20 @@ namespace Presentation
             builder.Services.AddSwaggerGen();
 
             builder.Services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(
+                    builder.Configuration.GetConnectionString("DefaultConnection"),
+                    sqlOptions => sqlOptions.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null)));
+
+            builder.Services.AddIdentityCore<User>(options =>
+                       {
+                           // Здесь можно добавить настройки паролей и т.д.
+                           // options.Password.RequireDigit = true;
+                           // ...
+                       })
+                       .AddRoles<Role>()                // if need roles support
+                       .AddSignInManager<SignInManager<User>>() // if need SignInManager
+                       .AddEntityFrameworkStores<AppDbContext>()// for saving data in AppDbContext
+                       .AddDefaultTokenProviders();
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -58,7 +78,7 @@ namespace Presentation
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = builder.Configuration["Jwt:Issuer"],
                         ValidAudience = builder.Configuration["Jwt:Audience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? string.Empty))
                     };
                 });
 

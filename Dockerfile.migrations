@@ -1,0 +1,16 @@
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS migrations
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y dos2unix
+
+RUN dotnet tool install --global dotnet-ef --version 8.*
+ENV PATH="$PATH:/root/.dotnet/tools"
+
+COPY . .
+COPY wait-for-it.sh /wait-for-it.sh
+RUN dos2unix /wait-for-it.sh && chmod +x /wait-for-it.sh
+
+RUN dotnet restore SubscriptionManagementSystemApi.sln
+RUN dotnet build SubscriptionManagementSystemApi.sln -c Release
+
+CMD ["/bin/bash"]

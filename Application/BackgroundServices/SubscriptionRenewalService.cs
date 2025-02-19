@@ -26,6 +26,7 @@ namespace Application.BackgroundServices
 
                 // Check subscriptions again in 24 hours
                 await Task.Delay(TimeSpan.FromHours(24), stoppingToken);
+                // TODO For Development use TimeSpan.FromSeconds(10) to check every 10 seconds
             }
         }
     }
