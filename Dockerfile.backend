@@ -7,11 +7,15 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 
-COPY ["Presentation/Presentation.csproj", "Presentation/"]
-COPY ["Infrastructure/Infrastructure.csproj", "Infrastructure/"]
-RUN dotnet restore "./Presentation/Presentation.csproj"
+COPY server/*.sln .
+COPY server/Application/Application.csproj Application/
+COPY server/Domain/Domain.csproj Domain/
+COPY server/Infrastructure/Infrastructure.csproj Infrastructure/
+COPY server/Presentation/Presentation.csproj Presentation/
 
-COPY . .
+COPY server/ .
+RUN dotnet restore
+
 WORKDIR "/src/Presentation"
 RUN dotnet build "./Presentation.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
