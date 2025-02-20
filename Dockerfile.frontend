@@ -1,5 +1,5 @@
 ﻿# Production
-# FROM node:16 AS build
+# FROM node: AS build
 
 # Development
 FROM node:20
@@ -8,7 +8,7 @@ WORKDIR /app
 COPY client/package.json client/package-lock.json ./
 
 RUN npm install --legacy-peer-deps
-RUN npm install --save-dev webpack webpack-cli
+RUN npm install --save-dev webpack webpack-cli --legacy-peer-deps
 
 COPY client/ ./
 
