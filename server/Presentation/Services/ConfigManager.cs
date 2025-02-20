@@ -42,11 +42,15 @@ namespace Presentation.Services
 
         private static void ConfigureServices(WebApplicationBuilder builder)
         {
+            builder.Services.AddControllers(); 
+
             RegisterServices(builder);
             RegisterBackgroundServices(builder);
             ConfigureDataProtection(builder);
             ConfigureDatabase(builder);
             ConfigureIdentity(builder);
+
+            builder.Services.AddAuthorization();
         }
 
         private static void ConfigureAuthentication(WebApplicationBuilder builder)
