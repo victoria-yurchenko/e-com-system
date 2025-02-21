@@ -1,23 +1,27 @@
-﻿# Production
-# FROM node:20 AS build
-
-# Development
+﻿# Development
 FROM node:20
 
 WORKDIR /app
 COPY client/package.json client/package-lock.json ./
 
 RUN npm install --legacy-peer-deps
-RUN npm install --save-dev webpack webpack-cli --legacy-peer-deps
+RUN npm install --save-dev webpack-cli webpack-dev-server --legacy-peer-deps
 
 COPY client/ ./
 
 EXPOSE 3000
 
+ENV NODE_ENV=${NODE_ENV}
+
 # Development
 CMD ["npm", "start"]
 
 # Production
+# FROM node:20 AS build
+# WORKDIR /app
+# COPY client/package.json client/package-lock.json ./
+# RUN npm install --legacy-peer-deps
+# COPY client/ ./
 # RUN npm run build
 
 # FROM nginx:stable-alpine

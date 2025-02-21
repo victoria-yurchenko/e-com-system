@@ -1,27 +1,21 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import HomePage from './pages/Homepage';
-import TopNavBar from './components/common/TopNavBar';
+import { TopBar } from '@components/common';
 import { Grid2 } from '@mui/material';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
+import { RegisterPage, LoginPage, HomePage, WelcomePage, NotFoundPlaceholder, SubscriptionsPage } from "@pages";
 
 const App = () => {
-  const { i18n } = useTranslation();
-
-  const changeLanguage = (lng) => {
-    i18n.changeLanguage(lng);
-  };
-
   return (
     <Grid2>
-      <TopNavBar />
+      <TopBar />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/auth/login" element={<LoginPage />} />
-          <Route path="/auth/register" element={<RegisterPage />} />
+          <Route path="home" element={<HomePage />} />
+          <Route path="welcome" element={<WelcomePage />} />
+          <Route path="sign-in" element={<LoginPage />} />
+          <Route path="sign-up" element={<RegisterPage />} />
+          <Route path="subscriptions" element={<SubscriptionsPage />} />
+          <Route path="*" element={<NotFoundPlaceholder />} />
         </Routes>
       </BrowserRouter>
     </Grid2>

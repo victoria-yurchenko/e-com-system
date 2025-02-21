@@ -1,29 +1,23 @@
 {
-    "welcome": "Welcome to the Subscription System",
-    "about": {
-        "title": "About Us",
-        "description": "Our platform provides an easy way to manage subscriptions. We offer simple payment system integration, user data management, and more."
-    },
-    "advantages": {
-        "title": "Advantages",
-        "convenience": "Convenience",
-        "convenience_description": "Easily manage subscriptions through a single dashboard.",
-        "stripe": "Stripe Integration",
-        "stripe_description": "Support for payments through Stripe for your convenience.",
-        "support": "Support",
-        "support_description": "We are always ready to help with any questions."
-    },
-    "reviews": {
-        "title": "Reviews",
-        "review1": "“Amazing platform! Everything is simple and clear.” — Alexander",
-        "review2": "“Stripe integration works perfectly. Highly recommend!” — Maria"
-    }, 
-    "auth": {
-        "login": "Login",
-        "signup": "Sign Up",
-        "signin": "Sign In",
-        "forgot_password": "Forgot Password?",
-        "reset_password": "Reset Password",
-        "reset_password_sent": "Password reset link sent successfully. Check your inbox."
-    }
+    "welcomePage": {
+    "title": "Welcome",
+    "subtitle": "If you already have an account, please log in. If not, you can press sign up now."
+  },
+  "signInPage": {
+    "noAccount": "Don't have an account?",
+    "welcomeBack": "Welcome back",
+    "subtitle": "Don't forget to check the latest updates. Please sign in to continue. "
+  },
+  "signUpPage": {
+    "title": "Welcome",
+    "subtitle": "Creating an account will allow you to access all the features of our platform. Fill in the fields below to get started.",
+    "hasAccount": "Have an account?"
+  },
+  "general": {
+    "signin": "Sign In",
+    "signup": "Sign Up",
+    "email": "Emali",
+    "password": "Password",
+    "confirmPassword": "Confirm Password"
+  }
 }

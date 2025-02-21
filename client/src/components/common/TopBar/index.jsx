@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Container, Button } from '@mui/material';
 
-const TopNavBar = () => {
+const TopBar = () => {
     const { i18n } = useTranslation();
 
     const changeLanguage = (lng) => {
@@ -23,4 +23,4 @@ const TopNavBar = () => {
     );
 };
 
-export default TopNavBar;
+export default TopBar;

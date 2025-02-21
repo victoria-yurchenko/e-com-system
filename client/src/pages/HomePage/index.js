@@ -2,10 +2,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Box, Container, Card, CardContent, Grid2 } from '@mui/material';
 import { Star, CreditCard, Notifications } from '@mui/icons-material';
-import Text from '../components/common/Text';
-import BusinessManThumbsUp from './../assets/images/business_man_thumbs_up.jpg';
-import HappyBusinessWoman from './../assets/images/happy_business_woman.jpg';
-import ImageCard from '../components/common/ImageCard';
+import BusinessManThumbsUp from '@assets/images/business_man_thumbs_up.jpg';
+import HappyBusinessWoman from '@assets/images/happy_business_woman.jpg';
+import { Text, ImageCard } from '@components/common'
 
 const HomePage = () => {
   const { t } = useTranslation();
@@ -28,7 +27,6 @@ const HomePage = () => {
           {t('advantages.title')}
         </Text>
         <Box sx={{ gris: 4 }}>
-
           <Grid2 container spacing={3}>
             <Grid2 item xs={12} md={4}>
               <Card sx={{width: '100%'}}>
