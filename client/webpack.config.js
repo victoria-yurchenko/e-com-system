@@ -1,5 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const webpack = require("webpack");
 
 module.exports = {
   mode: "development",
@@ -9,16 +10,19 @@ module.exports = {
     filename: "bundle.js",
     publicPath: "/",
   },
+  target: "web", 
   devServer: {
-    static: path.resolve(__dirname, "dist"),
+    static: path.resolve(__dirname, "public"),
     historyApiFallback: true,
     hot: true,
     port: 3000,
+    open: true, 
+    watchFiles: ["public/**/*"], 
   },
   resolve: {
     extensions: [".js", ".jsx", ".ts", ".tsx"],
     alias: {
-      "@assets": path.resolve(__dirname, "./assets"),
+      "@assets": path.resolve(__dirname, "assets"),
       "@components": path.resolve(__dirname, "src/components"),
       "@store": path.resolve(__dirname, "src/store"),
       "@pages": path.resolve(__dirname, "src/pages"),
@@ -39,15 +43,10 @@ module.exports = {
       },
       {
         test: /\.(png|jpe?g|gif|svg)$/i,
-        use: [
-          {
-            loader: "file-loader",
-            options: {
-              name: "[name].[ext]",
-              outputPath: "images/",
-            },
-          },
-        ],
+        type: "asset/resource", 
+        generator: {
+          filename: "images/[name][ext]",
+        },
       },
     ],
   },
@@ -55,5 +54,6 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./public/index.html",
     }),
+    new webpack.HotModuleReplacementPlugin(),
   ],
 };
