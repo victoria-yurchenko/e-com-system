@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  baseURL: 'http://localhost:5000/api', 
+  baseURL: 'http://localhost:5000/api',  // TODO set to config file
 };
 
 const apiSlice = createSlice({

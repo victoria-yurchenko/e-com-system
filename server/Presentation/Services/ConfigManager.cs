@@ -36,16 +36,18 @@ namespace Presentation.Services
             }
 
             app.UseHttpsRedirection();
+            app.UseCors("AllowAll");
             app.UseAuthorization();
             app.MapControllers();
         }
 
         private static void ConfigureServices(WebApplicationBuilder builder)
         {
-            builder.Services.AddControllers(); 
+            builder.Services.AddControllers();
 
             RegisterServices(builder);
             RegisterBackgroundServices(builder);
+            AddCors(builder);
             ConfigureDataProtection(builder);
             ConfigureDatabase(builder);
             ConfigureIdentity(builder);
@@ -95,6 +97,19 @@ namespace Presentation.Services
             builder.Services.Configure<HostOptions>(options =>
             {
                 options.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore;
+            });
+        }
+
+        private static void AddCors(WebApplicationBuilder builder)
+        {
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", policy =>
+                {
+                    policy.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader();
+                });
             });
         }
 

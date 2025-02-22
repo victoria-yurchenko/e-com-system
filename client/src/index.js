@@ -11,8 +11,10 @@ import { theme } from '@styles/themes/theme';
 
 const container = document.getElementById('root');
 const root = createRoot(container);
+console.log("🔥 index.js загружен!");
 
 const render = () => {
+  
   root.render(
     <React.StrictMode>
       <Provider store={store}>

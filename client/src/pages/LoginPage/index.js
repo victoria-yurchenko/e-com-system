@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser } from '@store/authSlice';
+import { loginUser } from '@store/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
 import { Box, Container, Typography, CircularProgress, Grid2, Link } from '@mui/material';
 import { useTranslation } from 'react-i18next';
@@ -19,8 +19,7 @@ const LoginPage = () => {
   });
 
   useState(() => {
-console.log(formInputs);
-
+    console.log(formInputs);
   });
 
   const onSubmit = async (data) => {

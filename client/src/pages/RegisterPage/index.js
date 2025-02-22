@@ -5,28 +5,40 @@ import { useNavigate } from 'react-router-dom';
 import { Box, Container, Typography, CircularProgress, Grid2, Link } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import { TextField, Button, Text } from "@components/common";
+import { registerUser } from '@store/slices/authSlice';
 
 const RegisterPage = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
     const { loading, error } = useSelector((state) => state.auth);
     const { t } = useTranslation();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const [formInputs, setFormInputs] = useState({
         email: '',
         password: '',
         passwordConfirm: '',
     });
 
-
     const handleChange = (e) => {
         setFormInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    }
+        console.log(e.target.name, e.target.value); // Выводит актуальное значение
+    };
+    
+    const doesPasswordsMatch = () => {
+        return formInputs.password === formInputs.passwordConfirm;
+    };
 
     const onSubmit = async (data) => {
+        if (!doesPasswordsMatch()) {
+            alert("Passwords do not match");
+            return;
+        }
+        //TODO remove console logs for production
         try {
-            // await dispatch(registerUser(data)).unwrap();
-            navigate('/auth/login');
+            await dispatch(registerUser({ email: data.email, password: data.password })).unwrap();
+            console.log("Registration successful:", result);
+            navigate("/sign-in");
         } catch (err) {
             console.error("Error during registration:", err);
         }
@@ -60,17 +72,20 @@ const RegisterPage = () => {
                             <TextField
                                 label={t('general.email')}
                                 fullWidth
+                                type="email"
                                 margin="normal"
-                                {...register('email', { required: "Enter email", pattern: /^\S+@\S+\.\S+$/ })}
+                                name="email"
+                                onChange={handleChange}
                                 error={!!errors.email}
                                 helperText={errors.email?.message}
                             />
                             <TextField
                                 label={t('general.password')}
                                 type="password"
+                                onChange={handleChange}
+                                name="password"
                                 fullWidth
                                 margin="normal"
-                                {...register('password', { required: "Enter password" })}
                                 error={!!errors.password}
                                 helperText={errors.password?.message}
                             />
@@ -78,13 +93,14 @@ const RegisterPage = () => {
                             <TextField
                                 label={t('general.confirmPassword')}
                                 type="password"
+                                onChange={handleChange}
                                 fullWidth
                                 margin="normal"
-                                {...register('password', { required: "Enter password" })}
-                                error={!!errors.password}
-                                helperText={errors.password?.message}
-                                onChange={handleChange}
+                                name="passwordConfirm"
+                                error={!!errors.passwordConfirm}
+                                helperText={errors.passwordConfirm?.message}
                             />
+
                             {loading ? <CircularProgress /> : null}
                             {error && <Typography color="error">{error}</Typography>}
                             <Button type="submit" variant="contained" color="primary" fullWidth>

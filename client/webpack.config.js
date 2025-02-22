@@ -18,6 +18,9 @@ module.exports = {
     port: 3000,
     open: true, 
     watchFiles: ["public/**/*"], 
+    client: {
+      logging: "verbose", 
+    },
   },
   resolve: {
     extensions: [".js", ".jsx", ".ts", ".tsx"],

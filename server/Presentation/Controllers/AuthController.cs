@@ -1,7 +1,5 @@
 ﻿using Application.DTOs;
 using Application.Interfaces;
-using Domain.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
@@ -10,15 +8,10 @@ namespace Presentation.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
-        private readonly IJwtService _jwtService;
-        private readonly IPasswordHasher<User> _passwordHasher;
         private readonly IAuthService _authService;
 
-        public AuthController(IUserRepository userRepository, IPasswordHasher<User> passwordHasher, IAuthService authService)
+        public AuthController(IAuthService authService)
         {
-            _userRepository = userRepository;
-            _passwordHasher = passwordHasher;
             _authService = authService;
         }
 
