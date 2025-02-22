@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile.sqlserver
     container_name: sqlserver
     ports:
-      - "1433:1433"
+      - "${SQLSERVER_PORT}:${SQLSERVER_PORT}"
     environment:
       SA_PASSWORD: "${SA_PASSWORD}"
       ACCEPT_EULA: "Y"
@@ -44,10 +44,11 @@ services:
       context: .
       dockerfile: Dockerfile.backend
     ports:
-      - "5000:5000"
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
     environment:
       ASPNETCORE_ENVIRONMENT: "${ASPNETCORE_ENVIRONMENT}"
-      ConnectionStrings__DefaultConnection: "Server=sqlserver,1433;Database=SubscriptionDb;User Id=sa;Password=${SA_PASSWORD};TrustServerCertificate=true;"
+      ASPNETCORE_URLS: "${ASPNETCORE_URLS}"
+      ConnectionStrings__DefaultConnection: "${CONNECTION_STRING}"
     depends_on:
       sqlserver:
         condition: service_healthy
@@ -65,7 +66,7 @@ services:
       context: .
       dockerfile: Dockerfile.frontend
     ports:
-      - "3000:3000"
+      -  "${FRONTEND_PORT}:${FRONTEND_PORT}"
     depends_on:
       - backend
     networks:
@@ -79,6 +80,7 @@ services:
       CHOKIDAR_USEPOLLING: "true"
       WATCHPACK_POLLING: "true"
       NODE_ENV: ${NODE_ENV}
+      REACT_APP_API_URL: "${REACT_APP_API_URL}"
     restart: always
     command: ["npm", "start"]
 
