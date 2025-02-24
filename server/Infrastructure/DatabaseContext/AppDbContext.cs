@@ -6,7 +6,6 @@ namespace Infrastructure.DatabaseContext
 {
     public class AppDbContext : IdentityDbContext<User, Role, Guid>
     {
-        public DbSet<User> Users { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
         public DbSet<UserSubscription> UserSubscriptions { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
@@ -17,6 +16,8 @@ namespace Infrastructure.DatabaseContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<User>().ToTable("Users");
 
             // User
             modelBuilder.Entity<User>()
@@ -42,7 +43,7 @@ namespace Infrastructure.DatabaseContext
 
             modelBuilder.Entity<Transaction>()
                 .Property(t => t.Amount)
-                .HasPrecision(18,2);
+                .HasPrecision(18, 2);
 
             // Notification
             modelBuilder.Entity<Notification>()

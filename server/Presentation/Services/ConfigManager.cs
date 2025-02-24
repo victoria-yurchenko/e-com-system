@@ -11,6 +11,9 @@ using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.OpenApi.Models;
+using Application.Configurations;
+using Application.Factories;
 
 namespace Presentation.Services
 {
@@ -29,14 +32,18 @@ namespace Presentation.Services
 
         public static void ConfigureApplication(WebApplication app)
         {
-            if (app.Environment.IsDevelopment())
+            if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(options =>
+                {
+                    options.SwaggerEndpoint(app.Configuration["Swagger:Endpoint"] ?? string.Empty, app.Configuration["Swagger:Title"] ?? string.Empty);
+                    options.RoutePrefix = app.Configuration["Swagger:RoutePrefix"] ?? string.Empty;
+                });
             }
 
             app.UseHttpsRedirection();
-            app.UseCors("AllowAll");
+            app.UseCors(app.Configuration["CORS:PolicyName"] ?? string.Empty);
             app.UseAuthorization();
             app.MapControllers();
         }
@@ -53,6 +60,16 @@ namespace Presentation.Services
             ConfigureIdentity(builder);
 
             builder.Services.AddAuthorization();
+
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = builder.Configuration["Swagger:Title"] ?? string.Empty,
+                    Version = builder.Configuration["Swagger:Version"] ?? string.Empty
+                });
+            });
         }
 
         private static void ConfigureAuthentication(WebApplicationBuilder builder)
@@ -89,6 +106,12 @@ namespace Presentation.Services
             builder.Services.AddScoped<IAnalyticsRepository, AnalyticsRepository>();
             builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
             builder.Services.AddScoped<IUserSubscriptionRepository, UserSubscriptionRepository>();
+            builder.Services.AddScoped(typeof(ResponseService<>));
+            
+            builder.Services.Configure<ErrorMessagesConfig>(builder.Configuration.GetSection("ErrorMessages"));
+
+            builder.Services.AddSingleton<ExceptionFactory>();
+
         }
 
         private static void RegisterBackgroundServices(WebApplicationBuilder builder)
@@ -104,7 +127,7 @@ namespace Presentation.Services
         {
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowAll", policy =>
+                options.AddPolicy(builder.Configuration["CORS:PolicyName"] ?? string.Empty, policy =>
                 {
                     policy.AllowAnyOrigin()
                           .AllowAnyMethod()
@@ -116,8 +139,8 @@ namespace Presentation.Services
         private static void ConfigureDataProtection(WebApplicationBuilder builder)
         {
             builder.Services.AddDataProtection()
-              .PersistKeysToFileSystem(new DirectoryInfo(builder.Configuration["DataProtection:KeysPath"]))
-              .SetApplicationName(builder.Configuration["App:Name"]);
+              .PersistKeysToFileSystem(new DirectoryInfo(builder.Configuration["DataProtection:KeysPath"] ?? string.Empty))
+              .SetApplicationName(builder.Configuration["App:Name"] ?? string.Empty);
         }
 
         private static void ConfigureDatabase(WebApplicationBuilder builder)
@@ -132,8 +155,9 @@ namespace Presentation.Services
         {
             builder.Services.AddIdentityCore<User>(options =>
             {
-                // password setup i.e.:
-                // options.Password.RequireDigit = true;
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireNonAlphanumeric = false;
             })
                 .AddRoles<Role>()
                 .AddSignInManager<SignInManager<User>>()

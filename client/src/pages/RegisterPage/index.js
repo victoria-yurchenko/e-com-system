@@ -22,25 +22,38 @@ const RegisterPage = () => {
 
     const handleChange = (e) => {
         setFormInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-        console.log(e.target.name, e.target.value); // Выводит актуальное значение
+        console.log(e.target.name, e.target.value); //TODO remove for production
     };
     
     const doesPasswordsMatch = () => {
         return formInputs.password === formInputs.passwordConfirm;
     };
 
-    const onSubmit = async (data) => {
+    const onSubmit = async () => {
         if (!doesPasswordsMatch()) {
             alert("Passwords do not match");
             return;
         }
         //TODO remove console logs for production
         try {
-            await dispatch(registerUser({ email: data.email, password: data.password })).unwrap();
+            const result = await dispatch(registerUser({ email: formInputs.email, password: formInputs.password })).unwrap();
             console.log("Registration successful:", result);
             navigate("/sign-in");
         } catch (err) {
-            console.error("Error during registration:", err);
+            console.log("Error during registration:", err);
+
+        // Проверяем, есть ли у ошибки развернутое сообщение от сервера
+        let errorMessage = "An unknown error occurred. Please try again.";
+
+        if (err?.message) {
+            errorMessage = err.message; // Обычно err.message содержит краткое описание ошибки
+        } else if (err?.response?.data?.message) {
+            errorMessage = err.response.data.message; // Если ошибка передается в теле ответа
+        } else if (err?.response?.data?.error) {
+            errorMessage = err.response.data.error; // Некоторые API передают ошибку под ключом `error`
+        }
+
+        alert(errorMessage); // Показываем пользователю
         }
     };
 

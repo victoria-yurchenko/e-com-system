@@ -1,14 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { selectBaseURL } from './apiSlice';
+import apiClient from '../api/axiosInstance';
 
 // User registration
 export const registerUser = createAsyncThunk(
   'auth/registerUser',
-  async (userData, { getState, rejectWithValue }) => {
+  async (userData, { rejectWithValue }) => {
     try {
-      const baseURL = selectBaseURL(getState());
-      const response = await axios.post(`${baseURL}/auth/register`, userData);
+      const response = await apiClient.post('/auth/register', userData);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || "Registration failed");
