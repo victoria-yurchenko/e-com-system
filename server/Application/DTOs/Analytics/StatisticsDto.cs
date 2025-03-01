@@ -1,6 +1,6 @@
-﻿namespace Application.DTOs
+﻿namespace Application.DTOs.Analytics
 {
-    public class StatisticsDto
+    public record StatisticsDto
     {
         public int TotalSubscriptions { get; set; }
         public decimal TotalRevenue { get; set; }

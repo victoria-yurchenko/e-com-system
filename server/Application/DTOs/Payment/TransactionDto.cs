@@ -1,6 +1,6 @@
-﻿namespace Application.DTOs
+﻿namespace Application.DTOs.Payment
 {
-    public class TransactionDto
+    public record TransactionDto
     {
         public DateTime Date { get; set; }
         public decimal Amount { get; set; }

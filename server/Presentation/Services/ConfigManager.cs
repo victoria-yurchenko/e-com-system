@@ -14,6 +14,10 @@ using System.Text;
 using Microsoft.OpenApi.Models;
 using Application.Configurations;
 using Application.Factories;
+using Application.Providers;
+using Application.Providers.Messaging;
+using Application.Interfaces.Authentication;
+using Application.Services.Authentication;
 
 namespace Presentation.Services
 {
@@ -92,13 +96,35 @@ namespace Presentation.Services
 
         private static void RegisterServices(WebApplicationBuilder builder)
         {
+            AddScopedServices(builder);
+            AddAppConfigurationServices(builder);
+            AddSingletoneServices(builder);
+        }
+
+        private static void AddAppConfigurationServices(WebApplicationBuilder builder)
+        {
+            builder.Services.Configure<ErrorMessagesConfig>(builder.Configuration.GetSection("ErrorMessages"));
+            builder.Services.Configure<SmtpConfig>(builder.Configuration.GetSection("Smtp"));
+            builder.Services.Configure<CommonMessagesConfig>(builder.Configuration.GetSection("CommonMessages"));
+        }
+
+        private static void AddSingletoneServices(WebApplicationBuilder builder)
+        {
+            builder.Services.AddSingleton<ExceptionFactory>();
+
+            builder.Services.AddSingleton<IMessageSender, EmailProvider>();
+            builder.Services.AddSingleton<IFactory<IMessageSender>, MessageSenderFactory>();
+
+        }
+
+        private static void AddScopedServices(WebApplicationBuilder builder)
+        {
             builder.Services.AddScoped<IJwtService, JwtService>();
             builder.Services.AddScoped<IAuthService, AuthService>();
             builder.Services.AddScoped<ISubscriptionService, SubscriptionService>();
             builder.Services.AddScoped<ISubscriptionRepository, SubscriptionRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IPaymentGateway, StripePaymentGateway>();
-            builder.Services.AddScoped<INotificationService, NotificationService>();
             builder.Services.AddScoped<IPaymentService, PaymentService>();
             builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
             builder.Services.AddScoped<IAdminService, AdminService>();
@@ -106,12 +132,10 @@ namespace Presentation.Services
             builder.Services.AddScoped<IAnalyticsRepository, AnalyticsRepository>();
             builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
             builder.Services.AddScoped<IUserSubscriptionRepository, UserSubscriptionRepository>();
+            builder.Services.AddScoped<IFactoryDependencyResolver, FactoryDependencyResolver>();
+            builder.Services.AddScoped<IFactoryProvider, FactoryProvider>();
+            builder.Services.AddScoped<IMessageSender, EmailMessageSenderService>();
             builder.Services.AddScoped(typeof(ResponseService<>));
-            
-            builder.Services.Configure<ErrorMessagesConfig>(builder.Configuration.GetSection("ErrorMessages"));
-
-            builder.Services.AddSingleton<ExceptionFactory>();
-
         }
 
         private static void RegisterBackgroundServices(WebApplicationBuilder builder)

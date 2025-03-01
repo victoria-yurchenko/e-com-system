@@ -1,6 +1,6 @@
-﻿namespace Application.DTOs
+﻿namespace Application.DTOs.Analytics
 {
-    public class AnalyticsDto
+    public record AnalyticsDto
     {
         public int TotalUsers { get; set; }
         public Dictionary<string, int> SubscriptionDistribution { get; set; }

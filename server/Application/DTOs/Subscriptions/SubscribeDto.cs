@@ -1,8 +1,8 @@
 ﻿using Domain.Enums;
 
-namespace Application.DTOs
+namespace Application.DTOs.Subscriptions
 {
-    public class SubscribeDto
+    public record SubscribeDto
     {
         public Guid SubscriptionId { get; set; }
         public PaymentMethod PaymentMethod { get; set; }

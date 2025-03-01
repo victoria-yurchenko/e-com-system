@@ -1,6 +1,6 @@
-﻿namespace Application.DTOs
+﻿namespace Application.DTOs.Subscriptions
 {
-    public class UserSubscriptionDto
+    public record UserSubscriptionDto
     {
         public string SubscriptionName { get; set; }
         public decimal Price { get; set; }

@@ -1,11 +1,12 @@
 ﻿using Application.Extensions;
 using Application.Factories;
 using Application.Interfaces;
+using Application.Interfaces.Authentication;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
-namespace Application.Services
+namespace Application.Services.Authentication
 {
     public class AuthService : IAuthService
     {

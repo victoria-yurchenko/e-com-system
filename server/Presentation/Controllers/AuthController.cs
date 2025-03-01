@@ -2,11 +2,9 @@
 using Application.DTOs;
 using Application.Enums;
 using Application.Exceptions;
-using Application.Interfaces;
+using Application.Interfaces.Authentication;    
 using Application.Services;
-using Application.Services.Base;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 namespace Presentation.Controllers
 {
@@ -31,7 +29,7 @@ namespace Presentation.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterUserDto registerDto)
         {
-            _logger.LogInformation($"Registering user with email: {registerDto.Email}");
+            _logger.LogInformation($"Registering user with email: {registerDto.Email} and password: {registerDto.Password}");
 
             try
             {
