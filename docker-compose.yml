@@ -39,6 +39,16 @@ services:
        bash -c "sleep 30 && /wait-for-it.sh sqlserver:1433 -t 60 &&
            dotnet ef database update --project Infrastructure/Infrastructure.csproj --startup-project Presentation/Presentation.csproj --connection \"Server=sqlserver,1433;Database=SubscriptionDb;User Id=sa;Password=${SA_PASSWORD};TrustServerCertificate=true;\" &&
            echo 'Migration completed'"
+           
+  redis:
+    image: "redis:latest"
+    container_name: redis
+    restart: always
+    ports:
+      - "${REDIS_PORT}:${REDIS_PORT}"
+    networks:
+      - app_network
+
   backend:
     build:
       context: .
@@ -54,6 +64,8 @@ services:
         condition: service_healthy
       migrations:
         condition: service_completed_successfully
+      redis:
+        condition: service_started
     networks:
       - app_network
     volumes:

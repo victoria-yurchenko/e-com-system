@@ -1,5 +1,6 @@
 using Application.BackgroundServices;
 using Application.Interfaces;
+using Application.Interfaces.Factories;
 using Application.Services;
 using Infrastructure.DatabaseContext;
 using Infrastructure.PaymentGateways;
@@ -18,6 +19,7 @@ using Application.Providers;
 using Application.Providers.Messaging;
 using Application.Interfaces.Authentication;
 using Application.Services.Authentication;
+using StackExchange.Redis;
 
 namespace Presentation.Services
 {
@@ -115,6 +117,8 @@ namespace Presentation.Services
             builder.Services.AddSingleton<IMessageSender, EmailProvider>();
             builder.Services.AddSingleton<IFactory<IMessageSender>, MessageSenderFactory>();
 
+            builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+                ConnectionMultiplexer.Connect(builder.Configuration["Redis:ConnectionString"] ?? string.Empty));
         }
 
         private static void AddScopedServices(WebApplicationBuilder builder)

@@ -1,6 +1,6 @@
 using Application.Enums;
 using Application.Factories;
-using Application.Interfaces;
+using Application.Interfaces.Factories;
 using Domain.Entities;
 
 namespace Application.Providers

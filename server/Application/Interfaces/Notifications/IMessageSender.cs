@@ -1,6 +1,6 @@
 using Application.Enums;
 
-namespace Application.Interfaces
+namespace Application.Interfaces.Notifications
 {
     public interface IMessageSender
     {

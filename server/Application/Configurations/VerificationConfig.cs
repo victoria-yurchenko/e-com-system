@@ -1,6 +1,6 @@
 namespace Application.Configurations
 {
-    public class EmailTemplateConfig
+    public class VerificationConfig
     {
         public string Subject { get; set; }
         public string Body { get; set; }

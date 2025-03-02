@@ -1,7 +1,7 @@
 using Application.Enums;
 using Application.Services.Base;
 
-namespace Application.Services
+namespace Application.Services.ServerResponces
 {
     public class ResponseService<T> : BaseResponseService<T>
     {

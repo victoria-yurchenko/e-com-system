@@ -28,6 +28,12 @@ PARAMETERS:
 "action" : Enums.Action.ToString(),
 "recipient" : Enums.Recipient.ToString(),
 
+var parameters = new NotificationParams
+{
+    Operation = Operation.EmailRegistrationLink,
+    Action = Action.SendByEmail,
+    Recipient = "user@example.com"
+};
  */
 
 

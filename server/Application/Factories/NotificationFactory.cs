@@ -1,7 +1,7 @@
-using Application.Interfaces;
 using Application.Enums;
-using Application.Strategies;
 using Microsoft.Extensions.DependencyInjection;
+using Application.Interfaces.Factories;
+using Application.Interfaces.Strategies;
 
 namespace Application.Factories
 {
@@ -18,7 +18,7 @@ namespace Application.Factories
         {
             return operation switch
             {
-                Operation.EmailRegistrationLink => _serviceProvider.GetRequiredService<EmailRegistrationLinkStrategy>(),
+                Operation.RegistrationActivationLink => _serviceProvider.GetRequiredService<EmailRegistrationLinkStrategy>(),
                 _ => throw new ArgumentException($"Unknown operation: {operation}")
             };
         }

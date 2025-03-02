@@ -1,7 +1,7 @@
 ﻿using Application.DTOs;
 using Application.Interfaces;
 
-namespace Application.Services
+namespace Application.Services.Analytics
 {
     public class AnalyticsService : IAnalyticsService
     {

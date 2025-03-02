@@ -1,6 +1,6 @@
 ﻿using Domain.Enums;
 
-namespace Application.Interfaces
+namespace Application.Interfaces.Gateways
 {
     public interface IPaymentGateway
     {

@@ -2,7 +2,7 @@
 using Application.Interfaces;
 using Domain.Entities;
 
-namespace Application.Services
+namespace Application.Services.Payment
 {
     public class PaymentService : IPaymentService
     {

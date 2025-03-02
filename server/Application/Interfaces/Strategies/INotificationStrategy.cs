@@ -1,4 +1,6 @@
-namespace Application.Interfaces
+using Application.Interfaces.Notifications;
+
+namespace Application.Interfaces.Strategies
 {
     public interface INotificationStrategy
     {

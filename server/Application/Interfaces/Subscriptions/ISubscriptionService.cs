@@ -1,6 +1,6 @@
 ﻿using Application.DTOs;
 
-namespace Application.Interfaces
+namespace Application.Interfaces.Subscriptions
 {
     public interface ISubscriptionService
     {
