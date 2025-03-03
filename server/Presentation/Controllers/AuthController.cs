@@ -1,9 +1,9 @@
 ﻿using Application.Configurations;
-using Application.DTOs;
+using Application.DTOs.Authentication;
 using Application.Enums;
 using Application.Exceptions;
-using Application.Interfaces.Authentication;    
-using Application.Services;
+using Application.Interfaces.Authentication;
+using Application.Services.ServerResponces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
@@ -26,6 +26,14 @@ namespace Presentation.Controllers
             _errorMessages = errorMessages;
         }
 
+        [HttpPost("verify-account")]
+        public async Task<IActionResult> VerifyAccountAsync(string identifier)
+        {
+            var verificationResult = await _authService.VerifyAccountAsync(identifier);
+            return _responseService.SuccessResponse(verificationResult, HttpStatusCodes.OK);
+        }
+
+// TODO Add custom exceptions 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterUserDto registerDto)
         {
@@ -36,7 +44,7 @@ namespace Presentation.Controllers
                 var user = await _authService.RegisterUserAsync(registerDto.Email, registerDto.Password);
                 return _responseService.SuccessResponse(user, HttpStatusCodes.OK);
             }
-            catch (UserAlreadyExistsException ex)
+            catch (UserAlreadyExistsException)
             {
                 return _responseService.ClientErrorResponse(_errorMessages.EmailAlreadyInUse, HttpStatusCodes.Conflict);
             }
@@ -52,10 +60,17 @@ namespace Presentation.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginUserDto loginUserDto)
+        public async Task<IActionResult> Login([FromBody] LoginUserDto loginUserDto)
         {
-            var token = _authService.AuthenticateUserAsync(loginUserDto.Email, loginUserDto.Password);
+            var token = await _authService.AuthenticateUserAsync(loginUserDto.Email, loginUserDto.Password);
             return Ok(new { Token = token });
+        }
+
+        [HttpPost("confirm-verification-code")]
+        public async Task<IActionResult> ConfirmVerificationCodeAsync(string identifier, string verificationCode)
+        {
+            var doesMatch = await _authService.ConfirmVerificationCodeAsync(identifier, verificationCode);
+            return _responseService.SuccessResponse(doesMatch.ToString(), HttpStatusCodes.OK);
         }
     }
 }

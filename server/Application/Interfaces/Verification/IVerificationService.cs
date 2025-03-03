@@ -4,7 +4,7 @@ namespace Application.Interfaces.Verification
 {
     public interface IVerificationService
     {
-        Task<string> GenerateVerificationCodeAsync(VerificationType verificationType, string identifier);
-        Task<bool> ConfirmVerificationCodeAsync(VerificationType verificationType, string identifier, string verificationCode);
+        Task<string> GenerateVerificationCodeAsync(Operation operation, string identifier);
+        Task<bool> ConfirmVerificationCodeAsync(Operation operation, string identifier, string verificationCode);
     }
 }

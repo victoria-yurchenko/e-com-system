@@ -4,29 +4,24 @@ using Application.Interfaces.Factories;
 using Application.Interfaces.Strategies;
 using Microsoft.Extensions.Logging;
 using Action = Application.Enums.Action;
+using Application.Interfaces.Utils;
 
 namespace Application.Dispatchers
 {
-    public class NotificationDispatcher : BaseDispatcher<NotificationDispatcher>
+    public class NotificationDispatcher(
+        IStrategiesFactory<INotificationStrategy, Operation> strategiesFactory,
+        IFactory<IMessageSender, Action> messageSenderFactory,
+        ILogger<NotificationDispatcher> logger,
+        IParameterExtractorService parameterExtractor) : BaseDispatcher<NotificationDispatcher>(logger)
     {
-        private readonly IStrategiesFactory<INotificationStrategy, Operation> _strategiesFactory;
-        private readonly IFactory<IMessageSender, Action> _messageSenderFactory;
-
-        public NotificationDispatcher(
-            IStrategiesFactory<INotificationStrategy, Operation> strategiesFactory,
-            IFactory<IMessageSender, Action> messageSenderFactory,
-            ILogger<NotificationDispatcher> logger)
-            : base(logger)
-        {
-            _strategiesFactory = strategiesFactory;
-            _messageSenderFactory = messageSenderFactory;
-        }
+        private readonly IStrategiesFactory<INotificationStrategy, Operation> _strategiesFactory = strategiesFactory;
+        private readonly IFactory<IMessageSender, Action> _messageSenderFactory = messageSenderFactory;
+        private readonly IParameterExtractorService _parameterExtractor = parameterExtractor;
 
         public override async Task DispatchAsync(IDictionary<string, object> parameters)
         {
-            var operation = GetParameter<Operation>(parameters, "operation");
-            var action = GetParameter<Action>(parameters, "action");
-
+            var operation = _parameterExtractor.GetEnumParameter<Operation>(parameters, "operation");
+            var action = _parameterExtractor.GetEnumParameter<Action>(parameters, "action");
             // _logger.LogInformation($"📩 Dispatching notification: {operation}");
 
             var messageSender = _messageSenderFactory.Create(action);

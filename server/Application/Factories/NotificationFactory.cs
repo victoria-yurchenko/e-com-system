@@ -2,6 +2,7 @@ using Application.Enums;
 using Microsoft.Extensions.DependencyInjection;
 using Application.Interfaces.Factories;
 using Application.Interfaces.Strategies;
+using Application.Strategies;
 
 namespace Application.Factories
 {
@@ -18,7 +19,7 @@ namespace Application.Factories
         {
             return operation switch
             {
-                Operation.RegistrationActivationLink => _serviceProvider.GetRequiredService<EmailRegistrationLinkStrategy>(),
+                Operation.Verification => _serviceProvider.GetRequiredService<VerificationStrategy>(),
                 _ => throw new ArgumentException($"Unknown operation: {operation}")
             };
         }

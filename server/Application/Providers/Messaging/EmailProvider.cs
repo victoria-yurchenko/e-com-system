@@ -2,7 +2,7 @@ using System.Net;
 using System.Net.Mail;
 using Application.Configurations;
 using Application.Enums;
-using Application.Interfaces;
+using Application.Interfaces.Notifications;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 

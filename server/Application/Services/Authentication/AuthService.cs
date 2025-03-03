@@ -2,13 +2,13 @@
 using Application.Interfaces.Authentication;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
+// using Microsoft.Extensions.Logging;
 using Application.Interfaces;
 using Application.Services.Notifications;
 using Application.Enums;
 using Application.Interfaces.Cache;
 using Action = Application.Enums.Action;
-using Application.Utils;
+using Application.Interfaces.Verification;
 
 namespace Application.Services.Authentication
 {
@@ -16,34 +16,31 @@ namespace Application.Services.Authentication
         IUserRepository userRepository,
         IPasswordHasher<User> passwordHasher,
         IJwtService jwtService,
-        ILogger<AuthService> logger,
+        // ILogger<AuthService> logger,
         ExceptionFactory exceptionFactory,
         NotificationService notificationService,
+        IVerificationService verificationService,
         IVerificationCache verificationCache) : IAuthService
     {
         private readonly IUserRepository _userRepository = userRepository;
         private readonly IPasswordHasher<User> _passwordHasher = passwordHasher;
         private readonly IJwtService _jwtService = jwtService;
-        private readonly ILogger<AuthService> _logger = logger;
+        // private readonly ILogger<AuthService> _logger = logger;
         private readonly ExceptionFactory _exceptionFactory = exceptionFactory;
         private readonly NotificationService _notificationService = notificationService;
         private readonly IVerificationCache _verificationCache = verificationCache;
+        private readonly IVerificationService _verificationService = verificationService;
 
-        public async Task<string> AuthenticateUserAsync(string email, string password)
+        public async Task<string> AuthenticateUserAsync(string identifier, string password)
         {
-            var user = await _userRepository.GetByEmailAsync(email);
-            if (user == null)
-            {
-                throw new Exception("Invalid credentials.");
-            }
-
+            var user = await _userRepository.GetByEmailAsync(identifier) ?? throw new Exception("Invalid credentials.");
             var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
             if (result != PasswordVerificationResult.Success)
             {
                 throw new Exception("Invalid credentials.");
             }
 
-            return _jwtService.GenerateToken(user.Id.ToString(), user.Email);
+            return GenerateJwt(user);
         }
 
         /// <summary>
@@ -51,24 +48,39 @@ namespace Application.Services.Authentication
         /// </summary>
         /// <param name="registerDto"></param>
         /// <returns>New user in JSON format</returns>
-        public async Task<string> RegisterUserAsync(string identifier, string password)
+        public async Task<string> VerifyAccountAsync(string identifier)
         {
-            await EnsureUserDoesNotExistAsync(identifier);
+            await CheckUserExist(identifier);
 
             // var user = await CreateAndSaveUser(email, password);
-            var verificationCode = VerificationCodeGenerator.GenerateCode();
+            var verificationCode = await _verificationService.GenerateVerificationCodeAsync(Operation.Verification, identifier); ;
             // Save to Redis for 15 minutes
             await _verificationCache.SaveAsync(identifier, verificationCode, TimeSpan.FromMinutes(15));
             // _logger.LogInformation($"User saved in the database. Email: {user.Email} Password: {user.UserName} ");
-            await SendRegistrationLinkAsync(identifier, verificationCode);
+            await SendVerificationCodeAsync(identifier, verificationCode);
 
-            // return $"{identifier.ToJsonString()}";
-            return "User registered successfully"; // TODO fix this line
+            return $"Code was sent to {identifier}";
         }
 
-        public async Task<string> ConfirmVerificationCodeAsync(VerificationType verificationType, string identifier, string verificationCode)
+        public async Task<bool> ConfirmVerificationCodeAsync(string identifier, string verificationCode)
         {
-            var cachedVerificationCode = await _verificationCache.GetAsync<string>(identifier);
+            var isCodeCorrect = await _verificationService.ConfirmVerificationCodeAsync(Operation.Verification, identifier, verificationCode);
+            await _verificationCache.SaveAsync(identifier, Operation.VerificationCompleted.ToString(), TimeSpan.FromMinutes(15));
+            return isCodeCorrect;
+        }
+
+        // Reterns JWT
+        public async Task<string> RegisterUserAsync(string identifier, string password)
+        {
+            var isVerified = await _verificationCache.GetAsync(identifier) == Operation.VerificationCompleted.ToString();
+            await CheckUserExist(identifier, [isVerified]);
+
+            var user = await CreateAndSaveUser(identifier, password);
+
+            await _verificationCache.RemoveAsync(identifier);
+
+            return GenerateJwt(user);
+        }
 
         private async Task<User> CreateAndSaveUser(string email, string password)
         {
@@ -77,30 +89,24 @@ namespace Application.Services.Authentication
             return user;
         }
 
-        private async Task SendRegistrationLinkAsync(string recipient, string verificationCode)
+        private async Task SendVerificationCodeAsync(string recipient, string verificationCode)
         {
-            var notificationParams = GetNotificationParams(recipient, verificationCode);
+            var notificationParams = GetDispatcherParameters(recipient, verificationCode);
             await _notificationService.SendNotificationAsync(notificationParams);
         }
 
-        private async Task EnsureUserDoesNotExistAsync(string identifier)
+        private async Task<bool> EnsureUserDoesNotExistAsync(string identifier)
         {
-            var existingUser = await _userRepository.GetByEmailAsync(identifier);
-
-            if (existingUser != null)
-            {
-                throw _exceptionFactory.UserAlreadyExists();
-            }
-            // TODO: set correct response error handling
+            return await _userRepository.GetByEmailAsync(identifier) != null;
         }
 
-        private static Dictionary<string, object> GetNotificationParams(string recipient, string verificationCode)
+        private static Dictionary<string, object> GetDispatcherParameters(string identifier, string verificationCode)
         {
-            return new Dictionary<string, object>()
+            return new Dictionary<string, object>
             {
-                { "operation", Operation.RegistrationActivationLink },
+                { "operation", Operation.Verification },
                 { "action", Action.SendByEmail },
-                { "recipient", recipient },
+                { "recipient", identifier },
                 { "verificationCode", verificationCode }
             };
         }
@@ -116,6 +122,20 @@ namespace Application.Services.Authentication
                 CreatedAt = DateTime.UtcNow
             };
             return user;
+        }
+
+        private async Task CheckUserExist(string identifier, params bool[] parameters)
+        {
+            var userExists = await EnsureUserDoesNotExistAsync(identifier);
+            if (!userExists && parameters.Contains(false))
+            {
+                throw _exceptionFactory.UserAlreadyExists();
+            }
+        }
+
+        private string GenerateJwt(User user)
+        {
+            return _jwtService.GenerateToken(user.Id.ToString(), user.Email);
         }
     }
 }

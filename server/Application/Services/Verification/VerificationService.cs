@@ -8,63 +8,42 @@ using Action = Application.Enums.Action;
 
 namespace Application.Services.Verification
 {
-    public class VerificationService : IVerificationService
+    public class VerificationService(
+        IVerificationCache verificationCache,
+        ILogger<VerificationService> logger) : IVerificationService
     {
-        private readonly IVerificationCache _verificationCache;
-        private readonly ILogger<VerificationService> _logger;
-        private readonly BaseDispatcher<VerificationDispatcher> _dispatcher;
+        private readonly IVerificationCache _verificationCache = verificationCache;
+        private readonly ILogger<VerificationService> _logger = logger;
 
-        public VerificationService(
-            IVerificationCache verificationCache,
-            ILogger<VerificationService> logger,
-            BaseDispatcher<VerificationDispatcher> dispatcher)
-        {
-            _verificationCache = verificationCache;
-            _logger = logger;
-            _dispatcher = dispatcher;
-        }
-
-        public async Task<string> GenerateVerificationCodeAsync(VerificationType verificationType, string identifier)
+        public async Task<string> GenerateVerificationCodeAsync(Operation operation, string identifier)
         {
             var verificationCode = VerificationCodeGenerator.GenerateCode();
-            var cacheKey = GetCacheKey(verificationType, identifier);
+            var cacheKey = GetCacheKey(operation, identifier);
 
             await _verificationCache.SaveAsync(cacheKey, verificationCode, TimeSpan.FromMinutes(15));
-            _logger.LogInformation($"✅ Generated verification code for {verificationType} ({identifier}): {verificationCode}");
-
-            var notificationParams = new Dictionary<string, object>
-            {
-                { "operation", Operation.RegistrationActivationLink },
-                { "action", Action.SendByEmail },
-                { "recipient", identifier },
-                { "verificationCode", verificationCode }
-            };
-
-            await _dispatcher.DispatchAsync(notificationParams);
-
+            // _logger.LogInformation($"✅ Generated verification code for {verificationType} ({identifier}): {verificationCode}");
             return verificationCode;
         }
 
-        public async Task<bool> ConfirmVerificationCodeAsync(VerificationType verificationType, string identifier, string verificationCode)
+        public async Task<bool> ConfirmVerificationCodeAsync(Operation operation, string identifier, string verificationCode)
         {
-            var cacheKey = GetCacheKey(verificationType, identifier);
+            var cacheKey = GetCacheKey(operation, identifier);
             var storedCode = await _verificationCache.GetAsync(cacheKey);
 
-            if (storedCode == null || storedCode != verificationCode)
+            if (storedCode == verificationCode)
             {
-                _logger.LogWarning($"❌ Invalid verification code for {verificationType} ({identifier})");
-                return false;
+                await _verificationCache.RemoveAsync(cacheKey);
+                return true;
+                // _logger.LogWarning($"❌ Invalid verification code for {verificationType} ({identifier})");
             }
 
-            await _verificationCache.RemoveAsync(cacheKey);
-            _logger.LogInformation($"✅ {verificationType} verified successfully for {identifier}.");
-
-            return true;
+            // _logger.LogInformation($"✅ {verificationType} verified successfully for {identifier}.");
+            return false;
         }
 
-        private string GetCacheKey(VerificationType verificationType, string identifier)
+        private string GetCacheKey(Operation operation, string identifier)
         {
-            return $"{verificationType}:{identifier}";
+            return $"{operation}:{identifier}";
         }
     }
 }

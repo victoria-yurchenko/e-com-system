@@ -11,16 +11,6 @@ namespace Application.Dispatchers
             _logger = logger;
         }
 
-        protected TEnum GetParameter<TEnum>(IDictionary<string, object> parameters, string key) where TEnum : struct, Enum
-        {
-            if (!parameters.TryGetValue(key, out var value) || value is not TEnum result)
-            {
-                _logger.LogError($"❌ Missing or invalid '{key}' parameter.");
-                throw new ArgumentException($"Missing or invalid '{key}' parameter.");
-            }
-            return result;
-        }
-
         public abstract Task DispatchAsync(IDictionary<string, object> parameters);
     }
 }
