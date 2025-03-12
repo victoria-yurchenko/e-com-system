@@ -1,5 +1,6 @@
-﻿using Application.DTOs;
-using Application.Interfaces;
+﻿using Application.DTOs.Payment;
+using Application.Interfaces.Payment;
+using Application.Interfaces.Repositories;
 using Domain.Entities;
 
 namespace Application.Services.Payment

@@ -1,4 +1,4 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.Subscriptions;
 
 namespace Application.Interfaces.Subscriptions
 {

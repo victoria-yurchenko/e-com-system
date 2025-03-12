@@ -1,4 +1,4 @@
-﻿using Application.Interfaces;
+﻿using Application.Interfaces.Repositories;
 using Domain.Entities;
 using Infrastructure.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +20,7 @@ namespace Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<UserSubscription> GetActiveByUserIdAsync(Guid userId)
+        public async Task<UserSubscription?> GetActiveByUserIdAsync(Guid userId)
         {
             return await _context.UserSubscriptions.FirstOrDefaultAsync(us => us.UserId == userId && us.IsActive && us.EndDate > DateTime.UtcNow);
         }
@@ -48,7 +48,7 @@ namespace Infrastructure.Repositories
             return await _context.UserSubscriptions.Where(us => us.StartDate >= startDate && us.EndDate <= endDate).ToListAsync();
         }
 
-        public async Task<UserSubscription> GetUserSubscriptionAsync(Guid userId)
+        public async Task<UserSubscription?> GetUserSubscriptionAsync(Guid userId)
         {
             return await _context.UserSubscriptions.Where(us => us.UserId == userId && us.IsActive).FirstOrDefaultAsync();
         }

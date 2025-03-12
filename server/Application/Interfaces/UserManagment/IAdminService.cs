@@ -1,4 +1,4 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.Analytics;
 using Domain.Entities;
 
 namespace Application.Interfaces.UserManagment

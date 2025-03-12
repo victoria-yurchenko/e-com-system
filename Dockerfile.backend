@@ -23,9 +23,20 @@ FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./Presentation.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
+# TODO remove for production
+FROM build AS dev
+WORKDIR /src/Presentation
 
-ENTRYPOINT ["dotnet", "Presentation.dll"]
+ENV DOTNET_USE_POLLING_FILE_WATCHER=1
+ENV DOTNET_WATCH_SUPPRESS_EMOJIS=1
+ENV DOTNET_WATCH_RESTART_ON_RUDE_EDIT=1
+ENV DOTNET_WATCH_SUPPRESS_MSBUILD_INCREMENTALISM=1
+
+CMD ["dotnet", "watch", "run", "--no-launch-profile"]
+
+# TODO This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
+# FROM base AS final
+# WORKDIR /app
+# COPY --from=publish /app/publish .
+
+# ENTRYPOINT ["dotnet", "Presentation.dll"]

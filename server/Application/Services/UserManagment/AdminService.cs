@@ -1,19 +1,16 @@
-﻿using Application.DTOs;
-using Application.Interfaces;
+﻿using Application.DTOs.Analytics;
+using Application.Interfaces.Repositories;
+using Application.Interfaces.UserManagment;
 using Domain.Entities;
 
 namespace Application.Services
 {
-    public class AdminService : IAdminService
+    public class AdminService(
+        IAdminSubscriptionRepository subscriptionRepository, 
+        IUserSubscriptionRepository userSubscriptionRepository) : IAdminService
     {
-        private readonly IAdminSubscriptionRepository _subscriptionRepository;
-        private readonly IUserSubscriptionRepository _userSubscriptionRepository;
-
-        public AdminService(IAdminSubscriptionRepository subscriptionRepository, IUserSubscriptionRepository userSubscriptionRepository)
-        {
-            _subscriptionRepository = subscriptionRepository;
-            _userSubscriptionRepository = userSubscriptionRepository;
-        }
+        private readonly IAdminSubscriptionRepository _subscriptionRepository = subscriptionRepository;
+        private readonly IUserSubscriptionRepository _userSubscriptionRepository = userSubscriptionRepository;
 
         public async Task<IEnumerable<Subscription>> GetAllSubscriptionsAsync()
         {

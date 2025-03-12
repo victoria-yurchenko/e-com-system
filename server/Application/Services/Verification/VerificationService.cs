@@ -1,10 +1,8 @@
-using Application.Dispatchers;
 using Application.Enums;
 using Application.Interfaces.Cache;
 using Application.Interfaces.Verification;
 using Application.Utils;
 using Microsoft.Extensions.Logging;
-using Action = Application.Enums.Action;
 
 namespace Application.Services.Verification
 {

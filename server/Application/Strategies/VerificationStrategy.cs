@@ -11,13 +11,14 @@ namespace Application.Strategies
     {
         private readonly IParameterExtractorService _parameterExtractor = parameterExtractor;
 
-        public async Task ExecuteAsync(IDictionary<string, object> parameters, IMessageSender messageSender)
+        public async Task ExecuteAsync(IDictionary<string, object> parameters, IMessageProvider provider)
         {
             var recipient = _parameterExtractor.TryExtractValue(parameters, "recipient") as string;
             var verificationCode = _parameterExtractor.TryExtractValue(parameters, "verificationCode") as string;
-
+        // TODO extract from parameters the full body of the message + verification code
+        // TODO: create 1 more strategy for body message content handling
             // var params = new Dictionary<string, object> { { "verificationCode", verificationCode }б  };
-            await messageSender.SendAsync(recipient ?? string.Empty, MessageTemplateKey.Verification, verificationCode ?? string.Empty);
+            await provider.SendAsync(recipient ?? string.Empty, verificationCode ?? string.Empty);
         }
     }
 }

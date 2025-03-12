@@ -4,21 +4,29 @@
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:5214"
+      "applicationUrl": "http://localhost:5214",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_USE_POLLING_FILE_WATCHER": "1",
+        "DOTNET_WATCH_SUPPRESS_EMOJIS": "1",
+        "DOTNET_WATCH_RESTART_ON_RUDE_EDIT": "1",
+        "DOTNET_WATCH_SUPPRESS_MSBUILD_INCREMENTALISM": "1"
+      }
     },
     "https": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7035;http://localhost:5214"
+      "applicationUrl": "https://localhost:7035;http://localhost:5214",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "DOTNET_USE_POLLING_FILE_WATCHER": "1",
+        "DOTNET_WATCH_SUPPRESS_EMOJIS": "1",
+        "DOTNET_WATCH_RESTART_ON_RUDE_EDIT": "1",
+        "DOTNET_WATCH_SUPPRESS_MSBUILD_INCREMENTALISM": "1"
+      }
     },
     "IIS Express": {
       "commandName": "IISExpress",
@@ -32,12 +40,18 @@
       "commandName": "Docker",
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
-      "environmentVariables": {
-        "ASPNETCORE_HTTPS_PORTS": "8081",
-        "ASPNETCORE_HTTP_PORTS": "8080"
-      },
       "publishAllPorts": true,
-      "useSSL": true
+      "useSSL": true,
+      "applicationUrl": "http://0.0.0.0:5214",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_HTTPS_PORTS": "8081",
+        "ASPNETCORE_HTTP_PORTS": "8080",
+        "DOTNET_USE_POLLING_FILE_WATCHER": "1",
+        "DOTNET_WATCH_SUPPRESS_EMOJIS": "1",
+        "DOTNET_WATCH_RESTART_ON_RUDE_EDIT": "1",
+        "DOTNET_WATCH_SUPPRESS_MSBUILD_INCREMENTALISM": "1"
+      }
     }
   },
   "$schema": "http://json.schemastore.org/launchsettings.json",

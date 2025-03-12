@@ -1,4 +1,4 @@
-using Presentation.Services;
+using Presentation.Configuration;
 
 namespace Presentation
 {

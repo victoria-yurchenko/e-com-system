@@ -1,5 +1,6 @@
-﻿using Application.DTOs;
-using Application.Interfaces;
+﻿using Application.DTOs.Analytics;
+using Application.Interfaces.Analytics;
+using Application.Interfaces.Repositories;
 
 namespace Application.Services.Analytics
 {

@@ -1,18 +1,13 @@
-﻿using Application.Interfaces;
+﻿using Application.Interfaces.Subscriptions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace Application.BackgroundServices
 {
-    public class SubscriptionRenewalService : BackgroundService
+    public class SubscriptionRenewalService(
+        IServiceProvider serviceProvider) : BackgroundService
     {
-        private readonly IServiceProvider _serviceProvider;
-
-        public SubscriptionRenewalService(IServiceProvider serviceProvider)
-        {
-            _serviceProvider = serviceProvider;
-        }
-
+        private readonly IServiceProvider _serviceProvider = serviceProvider;
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {

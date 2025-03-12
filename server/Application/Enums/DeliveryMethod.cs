@@ -1,9 +1,10 @@
 namespace Application.Enums
 {
-    public enum VerificationType
+    public enum DeliveryMethod
     {
         Email,
-        // Phone, 2 factor... 
+        Sms,
+        GoogleAuthentication
         // Add more...
     }
 }

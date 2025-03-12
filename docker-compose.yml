@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 services:
   sqlserver:
     build:
@@ -17,7 +17,11 @@ services:
       - sqlserver_data:/var/opt/mssql
     restart: always
     healthcheck:
-      test: ["CMD-SHELL", "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${SA_PASSWORD} -Q 'SELECT 1' || exit 1"]
+      test:
+        [
+          "CMD-SHELL",
+          "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${SA_PASSWORD} -Q 'SELECT 1' || exit 1",
+        ]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -36,10 +40,10 @@ services:
       - app_network
     restart: on-failure
     command: >
-       bash -c "sleep 30 && /wait-for-it.sh sqlserver:1433 -t 60 &&
-           dotnet ef database update --project Infrastructure/Infrastructure.csproj --startup-project Presentation/Presentation.csproj --connection \"Server=sqlserver,1433;Database=SubscriptionDb;User Id=sa;Password=${SA_PASSWORD};TrustServerCertificate=true;\" &&
-           echo 'Migration completed'"
-           
+      bash -c "sleep 30 && /wait-for-it.sh sqlserver:1433 -t 60 &&
+          dotnet ef database update --project Infrastructure/Infrastructure.csproj --startup-project Presentation/Presentation.csproj --connection \"Server=sqlserver,1433;Database=SubscriptionDb;User Id=sa;Password=${SA_PASSWORD};TrustServerCertificate=true;\" &&
+          echo 'Migration completed'"
+
   redis:
     image: "redis:latest"
     container_name: redis
@@ -58,6 +62,10 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: "${ASPNETCORE_ENVIRONMENT}"
       ASPNETCORE_URLS: "${ASPNETCORE_URLS}"
+      DOTNET_USE_POLLING_FILE_WATCHER: "${DOTNET_USE_POLLING_FILE_WATCHER}"
+      DOTNET_WATCH_SUPPRESS_EMOJIS: "$DOTNET_WATCH_SUPPRESS_EMOJIS"
+      DOTNET_WATCH_RESTART_ON_RUDE_EDIT: "$DOTNET_WATCH_RESTART_ON_RUDE_EDIT"
+      DOTNET_WATCH_SUPPRESS_MSBUILD_INCREMENTALISM: "$DOTNET_WATCH_SUPPRESS_MSBUILD_INCREMENTALISM"
       ConnectionStrings__DefaultConnection: "${CONNECTION_STRING}"
     depends_on:
       sqlserver:
@@ -70,15 +78,19 @@ services:
       - app_network
     volumes:
       - data-protection-keys:/root/.aspnet/DataProtection-Keys
+      - .:/app:cached
     restart: always
-    entrypoint: ["dotnet", "Presentation.dll"]
+    # TODO for production
+    # entrypoint: ["dotnet", "Presentation.dll"]
+    # todo: check this line
+    command: ["dotnet", "watch", "run", "--no-launch-profile"]
 
   frontend:
     build:
       context: .
       dockerfile: Dockerfile.frontend
     ports:
-      -  "${FRONTEND_PORT}:${FRONTEND_PORT}"
+      - "${FRONTEND_PORT}:${FRONTEND_PORT}"
     depends_on:
       - backend
     networks:

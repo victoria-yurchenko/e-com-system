@@ -3,17 +3,18 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Services.Base
 {
-    public abstract class BaseResponseService<T> : ObjectResult
+    public abstract class BaseResponseService<T> : ObjectResult where T : class
     {
-        public int StatusCode { get; protected set; }
-        public bool Success { get; protected set; }
-        public string ErrorMessage { get; protected set; }
-        public T Data { get; protected set; }
+        public string Message { get; set; }
+        public int ResponseStatusCode { get; protected set; }
+        public T? Data { get; protected set; }
 
-        protected BaseResponseService(HttpStatusCodes statusCode, string errorMessage = null, T data = default)
-        : base(new { success = statusCode >= HttpStatusCodes.OK && statusCode < HttpStatusCodes.Ambiguous, errorMessage, data })
+        public BaseResponseService(int statusCode, string message, T? data)
+            : base(new { StatusCode = statusCode, ErrorMessage = message, Data = data })
         {
-            StatusCode = (int)statusCode;
+            ResponseStatusCode = statusCode;
+            Message = message;
+            Data = data;
         }
     }
 }

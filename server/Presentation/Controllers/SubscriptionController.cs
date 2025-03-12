@@ -1,5 +1,5 @@
-﻿using Application.DTOs;
-using Application.Interfaces;
+﻿using Application.DTOs.Subscriptions;
+using Application.Interfaces.Subscriptions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,7 +28,7 @@ namespace Presentation.Controllers
         public async Task<IActionResult> Subscribe([FromBody] SubscribeDto dto)
         {
             // Get user ID through JWT-token
-            var userId = Guid.Parse(User.FindFirst("sub")?.Value);
+            var userId = Guid.Parse(User.FindFirst("sub")?.Value ?? string.Empty);
 
             var result = await _subscriptionService.ProcessSubscriptionAsync(userId, dto);
             return Ok(result);
@@ -37,7 +37,7 @@ namespace Presentation.Controllers
         [HttpGet("current")]
         public async Task<IActionResult> GetCurrentSubscription()
         {
-            var userId = Guid.Parse(User.FindFirst("sub")?.Value);
+            var userId = Guid.Parse(User.FindFirst("sub")?.Value ?? string.Empty);
             var subscription = await _subscriptionService.GetCurrentSubscriptionAsync(userId);
             return Ok(subscription);
         }
@@ -45,7 +45,7 @@ namespace Presentation.Controllers
         [HttpPost("change-plan")]
         public async Task<IActionResult> ChangeSubscriptionPlan([FromBody] ChangePlanDto dto)
         {
-            var userId = Guid.Parse(User.FindFirst("sub")?.Value);
+            var userId = Guid.Parse(User.FindFirst("sub")?.Value  ?? string.Empty);
             var result = await _subscriptionService.ChangeSubscriptionPlanAsync(userId, dto.NewSubscriptionId);
             return Ok(result);
         }
@@ -53,7 +53,7 @@ namespace Presentation.Controllers
         [HttpPost("disable-auto-renew")]
         public async Task<IActionResult> DisableAutoRenew()
         {
-            var userId = Guid.Parse(User.FindFirst("sub")?.Value);
+            var userId = Guid.Parse(User.FindFirst("sub")?.Value  ?? string.Empty);
             var result = await _subscriptionService.DisableAutoRenewAsync(userId);
             return Ok(result);
         }
@@ -61,7 +61,7 @@ namespace Presentation.Controllers
         [HttpPost("cancel")]
         public async Task<IActionResult> CancelSubscription()
         {
-            var userId = Guid.Parse(User.FindFirst("sub")?.Value);
+            var userId = Guid.Parse(User.FindFirst("sub")?.Value  ?? string.Empty);
             var result = await _subscriptionService.CancelSubscriptionAsync(userId);
             return Ok(result);
         }

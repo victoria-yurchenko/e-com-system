@@ -1,41 +1,32 @@
 using System.Net;
 using System.Net.Mail;
 using Application.Configurations;
-using Application.Enums;
 using Application.Interfaces.Notifications;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace Application.Providers.Messaging
 {
-    public class EmailProvider : IMessageSender
+    public class EmailProvider(
+        IOptions<SmtpConfig> smtpOptions,
+        IOptions<CommonMessagesConfig> messagesOptions,
+        ILogger<EmailProvider> logger) : IMessageProvider
     {
-        private readonly SmtpConfig _smtpConfig;
-        private readonly CommonMessagesConfig _messagesConfig;
-        private readonly ILogger<EmailProvider> _logger;
+        private readonly SmtpConfig _smtpConfig = smtpOptions.Value;
+        private readonly CommonMessagesConfig _messagesConfig = messagesOptions.Value;
+        private readonly ILogger<EmailProvider> _logger = logger;
 
-        public EmailProvider(IOptions<SmtpConfig> smtpOptions, IOptions<CommonMessagesConfig> messagesOptions, ILogger<EmailProvider> logger)
+        public async Task SendAsync(string recipient, string messageBody = "", params object[] contentParams)
         {
-            _smtpConfig = smtpOptions.Value;
-            _messagesConfig = messagesOptions.Value;
-            _logger = logger;
-        }
-
-        public async Task SendAsync(string recipient, MessageTemplateKey templateKey, params object[] contentParams)
-        {
-            if (!_messagesConfig.Email.Templates.TryGetValue(templateKey.ToString(), out var emailTemplate))
-            {
-                _logger.LogError($"Email template '{templateKey}' not found.");
-                throw new ArgumentException($"Template '{templateKey}' not found.");
-            }
-
-            var emailBody = string.Format(emailTemplate.Body, contentParams);
+            var emailTemplate = _messagesConfig.Templates.Verification;
+            var body = messageBody == string.Empty ? string.Format(emailTemplate.Body, contentParams) : messageBody;
+            var subject = emailTemplate.Subject;
 
             // _logger.LogInformation($"Sending email to {recipient}:");
             // _logger.LogInformation($"Subject: {emailSubject}");
             // _logger.LogInformation($"Body: {emailBody}");
 
-            using var mailMessage = CreateMailMessage(emailTemplate.Subject, emailBody, recipient);
+            using var mailMessage = CreateMailMessage(subject, body, recipient);
             using var smtpClient = CreateSmtpClient();
 
             await smtpClient.SendMailAsync(mailMessage);

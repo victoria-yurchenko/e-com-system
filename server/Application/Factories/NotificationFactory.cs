@@ -20,6 +20,7 @@ namespace Application.Factories
             return operation switch
             {
                 Operation.Verification => _serviceProvider.GetRequiredService<VerificationStrategy>(),
+                // TODO: add other strategies
                 _ => throw new ArgumentException($"Unknown operation: {operation}")
             };
         }

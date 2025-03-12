@@ -2,6 +2,6 @@ namespace Application.Configurations
 {
     public class CommonMessagesConfig
     {
-        public TemplateConfig Templates { get; set; }
+        public TemplatesConfig Templates { get; set; }
     }    
 }

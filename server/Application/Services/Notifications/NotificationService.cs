@@ -3,13 +3,16 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.Services.Notifications
 {
-    public class NotificationService(
-        BaseDispatcher<NotificationDispatcher> dispatcher,
-        ILogger<NotificationService> logger)
+    public class NotificationService
     {
-        private readonly ILogger<NotificationService> _logger = logger;
-        private readonly BaseDispatcher<NotificationDispatcher> _dispatcher = dispatcher;
+        private readonly ILogger<NotificationService> _logger;
+        private readonly BaseDispatcher<NotificationDispatcher> _dispatcher;
 
+        public NotificationService(NotificationDispatcher dispatcher, ILogger<NotificationService> logger)
+        {
+            _dispatcher = dispatcher ?? throw new ArgumentNullException(nameof(dispatcher));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        }
         /// <summary>
         /// 
         /*

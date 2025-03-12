@@ -3,33 +3,36 @@ using Application.Interfaces.Authentication;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 // using Microsoft.Extensions.Logging;
-using Application.Interfaces;
+using Application.Interfaces.Repositories;
 using Application.Services.Notifications;
 using Application.Enums;
 using Application.Interfaces.Cache;
-using Action = Application.Enums.Action;
 using Application.Interfaces.Verification;
 
 namespace Application.Services.Authentication
 {
-    public class AuthService(
-        IUserRepository userRepository,
-        IPasswordHasher<User> passwordHasher,
-        IJwtService jwtService,
-        // ILogger<AuthService> logger,
-        ExceptionFactory exceptionFactory,
-        NotificationService notificationService,
-        IVerificationService verificationService,
-        IVerificationCache verificationCache) : IAuthService
+    public class AuthService : IAuthService
     {
-        private readonly IUserRepository _userRepository = userRepository;
-        private readonly IPasswordHasher<User> _passwordHasher = passwordHasher;
-        private readonly IJwtService _jwtService = jwtService;
+        private readonly IUserRepository _userRepository;
+        private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly IJwtService _jwtService;
         // private readonly ILogger<AuthService> _logger = logger;
-        private readonly ExceptionFactory _exceptionFactory = exceptionFactory;
-        private readonly NotificationService _notificationService = notificationService;
-        private readonly IVerificationCache _verificationCache = verificationCache;
-        private readonly IVerificationService _verificationService = verificationService;
+        private readonly ExceptionFactory _exceptionFactory;
+        private readonly NotificationService _notificationService;
+        private readonly IVerificationService _verificationService;
+        private readonly IVerificationCache _verificationCache;
+
+
+        public AuthService(IUserRepository userRepository, IPasswordHasher<User> passwordHasher, IJwtService jwtService, ExceptionFactory exceptionFactory, NotificationService notificationService, IVerificationService verificationService, IVerificationCache verificationCache)
+        {
+            _userRepository = userRepository;
+            _passwordHasher = passwordHasher;
+            _jwtService = jwtService;
+            _exceptionFactory = exceptionFactory;
+            _notificationService = notificationService;
+            _verificationService = verificationService;
+            _verificationCache = verificationCache;
+        }
 
         public async Task<string> AuthenticateUserAsync(string identifier, string password)
         {
@@ -76,7 +79,6 @@ namespace Application.Services.Authentication
             await CheckUserExist(identifier, [isVerified]);
 
             var user = await CreateAndSaveUser(identifier, password);
-
             await _verificationCache.RemoveAsync(identifier);
 
             return GenerateJwt(user);
@@ -105,7 +107,7 @@ namespace Application.Services.Authentication
             return new Dictionary<string, object>
             {
                 { "operation", Operation.Verification },
-                { "action", Action.SendByEmail },
+                { "deliveryMethod", DeliveryMethod.Email },
                 { "recipient", identifier },
                 { "verificationCode", verificationCode }
             };

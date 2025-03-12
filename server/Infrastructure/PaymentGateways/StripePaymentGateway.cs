@@ -1,6 +1,5 @@
-﻿using Application.Interfaces;
-using Application.Services;
-using Domain.Entities;
+﻿using Application.Interfaces.Gateways;
+using Application.Interfaces.Payment;
 using Domain.Enums;
 using Stripe;
 using Stripe.Checkout;

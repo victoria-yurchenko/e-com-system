@@ -1,6 +1,6 @@
 namespace Application.Configurations
 {
-    public class TemplateConfig
+    public class TemplatesConfig
     {
         public VerificationConfig Verification { get; set; }
     }

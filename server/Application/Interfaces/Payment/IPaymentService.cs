@@ -1,6 +1,6 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.Payment;
 
-namespace Application.Interfaces
+namespace Application.Interfaces.Payment
 {
     public interface IPaymentService
     {

@@ -1,6 +1,6 @@
-﻿using Application.DTOs;
+﻿using Application.DTOs.Analytics;
 
-namespace Application.Interfaces
+namespace Application.Interfaces.Analytics
 {
     public interface IAnalyticsService
     {
