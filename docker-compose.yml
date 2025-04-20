@@ -78,7 +78,8 @@ services:
       - app_network
     volumes:
       - data-protection-keys:/root/.aspnet/DataProtection-Keys
-      - .:/app:cached
+      # - .:/app:cached
+      - ./server:/app:cached
     restart: always
     # TODO for production
     # entrypoint: ["dotnet", "Presentation.dll"]
