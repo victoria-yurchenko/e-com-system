@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  backend:
+    volumes:
+      - ./server:/app
+      - /app/bin
+      - /app/obj
+      - ./server/Presentation:/app/Presentation
+      - ./server/Application:/app/Application
+      - ./server/Infrastructure:/app/Infrastructure
+      - ./server/Domain:/app/Domain
