@@ -16,6 +16,21 @@ export const registerUser = createAsyncThunk(
   }
 );
 
+// Verification of account
+export const verifyAccount = createAsyncThunk(
+  'auth/verify-account',
+  async (identifierObj, { getState, rejectWithValue }) => {
+    try {
+      const baseURL = selectBaseURL(getState());
+      console.log("base url: ", baseURL);
+      const response = await axios.post(`${baseURL}/auth/verify-account`, identifierObj);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || "Login failed");
+    }
+  }
+);
+
 // User login
 export const loginUser = createAsyncThunk(
   'auth/loginUser',

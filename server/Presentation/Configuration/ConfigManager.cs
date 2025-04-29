@@ -70,7 +70,7 @@ namespace Presentation.Configuration
             }
 
             app.UseHttpsRedirection();
-            app.UseCors(app.Configuration["CORS:PolicyName"] ?? string.Empty);
+            app.UseCors("AllowAll");
             app.UseAuthorization();
             app.MapControllers();
         }
@@ -135,6 +135,7 @@ namespace Presentation.Configuration
         private static void RegisterSingletoneServices(WebApplicationBuilder builder)
         {
             builder.Services.AddSingleton<ExceptionFactory>();
+            builder.Services.AddSingleton<EmailProvider>();
 
             builder.Services.AddSingleton<IMessageProvider, EmailProvider>();
             builder.Services.AddSingleton<IFactory<IMessageProvider, DeliveryMethod>, MessagingProviderFactory>();
@@ -164,6 +165,8 @@ namespace Presentation.Configuration
         private static void RegisterFactories(WebApplicationBuilder builder)
         {
             builder.Services.AddScoped(typeof(IStrategiesFactory<,>), typeof(StrategiesFactory<,>));
+            builder.Services.AddScoped<NotificationFactory>();
+            builder.Services.AddScoped<IFactory<INotificationStrategy, Operation>, NotificationFactory>();
         }
 
         private static void RegisterDispatchers(WebApplicationBuilder builder)
@@ -230,11 +233,14 @@ namespace Presentation.Configuration
 
         private static void AddCors(WebApplicationBuilder builder)
         {
+            // TODO change AllowAll to specific origins for deployment
+            // TODO add CORS policy for production
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy(builder.Configuration["CORS:PolicyName"] ?? "Default", policy =>
+                options.AddPolicy("AllowAll", policy =>
                 {
-                    policy.AllowAnyOrigin()
+                    policy.WithOrigins("http://localhost:3000")
+                          .AllowAnyOrigin()
                           .AllowAnyMethod()
                           .AllowAnyHeader();
                 });

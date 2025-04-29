@@ -10,14 +10,30 @@
   },
   "signUpPage": {
     "title": "Welcome",
-    "subtitle": "Creating an account will allow you to access all the features of our platform. Fill in the fields below to get started.",
+    "subtitle": "Creating an account will allow you to access all the features of our platform",
     "hasAccount": "Have an account?"
   },
   "general": {
     "signin": "Sign In",
     "signup": "Sign Up",
-    "email": "Emali",
+    "email": "Email",
     "password": "Password",
-    "confirmPassword": "Confirm Password"
+    "confirmPassword": "Confirm Password",
+    "goBack": "Go Back",
+    "sendCode": "Send Code"
+  },
+  "verification": {
+    "beforeYouStart": "",
+    "chooseMethod": "Before you start the registration process, please choose the verification method",
+    "methods": {
+      "email": {
+        "title": "Email",
+        "description": "Please enter your email address"
+      },
+      "phone": {
+        "title": "Phone",
+        "description": "Please enter your phone number"
+      }
+    }
   }
 }

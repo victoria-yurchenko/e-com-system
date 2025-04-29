@@ -10,9 +10,9 @@
         public bool IsActive { get; set; }
         public bool IsAutoRenew { get; set; }
         public bool IsCancelled { get; set; }
-        public string SubscriptionStatus { get; set; }
+        public string SubscriptionStatus { get; set; } = default!;
 
-        public User User { get; set; }
-        public Subscription Subscription { get; set; }
+        public User User { get; set; } = default!;
+        public Subscription Subscription { get; set; } = default!;
     }
 }

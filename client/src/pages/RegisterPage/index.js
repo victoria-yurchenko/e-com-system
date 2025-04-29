@@ -24,7 +24,7 @@ const RegisterPage = () => {
         setFormInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
         console.log(e.target.name, e.target.value); //TODO remove for production
     };
-    
+
     const doesPasswordsMatch = () => {
         return formInputs.password === formInputs.passwordConfirm;
     };
@@ -42,18 +42,18 @@ const RegisterPage = () => {
         } catch (err) {
             console.log("Error during registration:", err);
 
-        // Проверяем, есть ли у ошибки развернутое сообщение от сервера
-        let errorMessage = "An unknown error occurred. Please try again.";
+            let errorMessage = "An unknown error occurred. Please try again.";
 
-        if (err?.message) {
-            errorMessage = err.message; // Обычно err.message содержит краткое описание ошибки
-        } else if (err?.response?.data?.message) {
-            errorMessage = err.response.data.message; // Если ошибка передается в теле ответа
-        } else if (err?.response?.data?.error) {
-            errorMessage = err.response.data.error; // Некоторые API передают ошибку под ключом `error`
-        }
+            if (err?.message) {
+                errorMessage = err.message; 
+            } else if (err?.response?.data?.message) {
+                errorMessage = err.response.data.message; 
+            } else if (err?.response?.data?.error) {
+                errorMessage = err.response.data.error; 
+            }
 
-        alert(errorMessage); // Показываем пользователю
+            alert(errorMessage); 
+                
         }
     };
 
@@ -86,41 +86,42 @@ const RegisterPage = () => {
                                 label={t('general.email')}
                                 fullWidth
                                 type="email"
-                                margin="normal"
                                 name="email"
                                 onChange={handleChange}
+                                value={formInputs.email}
                                 error={!!errors.email}
                                 helperText={errors.email?.message}
                             />
                             <TextField
                                 label={t('general.password')}
                                 type="password"
-                                onChange={handleChange}
                                 name="password"
+                                onChange={handleChange}
+                                value={formInputs.password}
                                 fullWidth
-                                margin="normal"
                                 error={!!errors.password}
                                 helperText={errors.password?.message}
+                                sx={{ mt: 1 }}
                             />
 
                             <TextField
                                 label={t('general.confirmPassword')}
                                 type="password"
                                 onChange={handleChange}
+                                value={formInputs.passwordConfirm}
                                 fullWidth
-                                margin="normal"
                                 name="passwordConfirm"
                                 error={!!errors.passwordConfirm}
                                 helperText={errors.passwordConfirm?.message}
+                                sx={{ mt: 1 }}
                             />
 
-                            {loading ? <CircularProgress /> : null}
-                            {error && <Typography color="error">{error}</Typography>}
-                            <Button type="submit" variant="contained" color="primary" fullWidth>
+                            <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 1 }}>
                                 <Text>
                                     {t("general.signup")}
                                 </Text>
                             </Button>
+                            {/* {error && <Typography color="error">{error}</Typography>} */}
                             <Link
                                 href="/sign-in"
                                 underline="hover"

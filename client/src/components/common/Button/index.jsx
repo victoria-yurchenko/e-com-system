@@ -4,6 +4,7 @@ import { Button as MuiButton } from '@mui/material';
 const Button = ({
   $variant = 'primary', 
   children,
+  sx={},
   ...otherProps
 }) => {
   return (
@@ -16,6 +17,7 @@ const Button = ({
         padding: '16px',
         fontSize: '16px',
         fontWeight: 600,
+        height: '65px',
         backgroundColor:
           $variant === 'secondary' ? 'secondary.main' : undefined,
         border: $variant === 'secondary' ? '2px solid #5D6AD1' : undefined,
@@ -24,6 +26,7 @@ const Button = ({
           backgroundColor: $variant === 'secondary' ? 'bg.light' : undefined,
           borderWidth: '2px',
         },
+        ...sx,
       }}
     >
       {children}

@@ -17,7 +17,6 @@ namespace Presentation.Controllers
         private readonly ResponseService<string> _responseService;
         private readonly ErrorMessagesConfig _errorMessages;
 
-
         public AuthController(IAuthService authService, ILogger<AuthController> logger, ResponseService<string> responseService, ErrorMessagesConfig errorMessages)
         {
             _authService = authService;
@@ -27,9 +26,10 @@ namespace Presentation.Controllers
         }
 
         [HttpPost("verify-account")]
-        public async Task<IActionResult> VerifyAccountAsync(string identifier)
+        public async Task<IActionResult> VerifyAccountAsync([FromBody] IdentifierDto identifierDto)
         {
-            var verificationResult = await _authService.VerifyAccountAsync(identifier);
+            _logger.LogInformation($"Verifying account with identifier, test: {identifierDto.Identifier}");
+            var verificationResult = await _authService.VerifyAccountAsync(identifierDto.Identifier);
             return _responseService.SuccessResponse(verificationResult, HttpStatusCodes.OK);
         }
 
@@ -66,11 +66,11 @@ namespace Presentation.Controllers
             return Ok(new { Token = token });
         }
 
-        [HttpPost("confirm-verification-code")]
-        public async Task<IActionResult> ConfirmVerificationCodeAsync(string identifier, string verificationCode)
-        {
-            var doesMatch = await _authService.ConfirmVerificationCodeAsync(identifier, verificationCode);
-            return _responseService.SuccessResponse(doesMatch.ToString(), HttpStatusCodes.OK);
-        }
+        // [HttpPost("confirm-verification-code")]
+        // public async Task<IActionResult> ConfirmVerificationCodeAsync([FromBody] string identifier, [FromBody] string verificationCode)
+        // {
+        //     var doesMatch = await _authService.ConfirmVerificationCodeAsync(identifier, verificationCode);
+        //     return _responseService.SuccessResponse(doesMatch.ToString(), HttpStatusCodes.OK);
+        // }
     }
 }

@@ -1,0 +1,5 @@
+email credantials:
+ "Smtp": {
+    "Username": "giloggigiloggi@gmail.com",
+    "Password": "Qwerty2001", 
+  },

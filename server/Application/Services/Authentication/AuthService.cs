@@ -46,14 +46,11 @@ namespace Application.Services.Authentication
             return GenerateJwt(user);
         }
 
-        /// <summary>
-        /// Registers a new user
-        /// </summary>
-        /// <param name="registerDto"></param>
-        /// <returns>New user in JSON format</returns>
+
         public async Task<string> VerifyAccountAsync(string identifier)
         {
             await CheckUserExist(identifier);
+            // Fill in the fields below to get started.
 
             // var user = await CreateAndSaveUser(email, password);
             var verificationCode = await _verificationService.GenerateVerificationCodeAsync(Operation.Verification, identifier); ;

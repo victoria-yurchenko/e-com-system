@@ -2,6 +2,6 @@ namespace Application.Configurations
 {
     public class TemplatesConfig
     {
-        public VerificationConfig Verification { get; set; }
+        public VerificationConfig Verification { get; set; } = default!;
     }
 }

@@ -22,6 +22,13 @@ namespace Application.Providers.Messaging
             var body = messageBody == string.Empty ? string.Format(emailTemplate.Body, contentParams) : messageBody;
             var subject = emailTemplate.Subject;
 
+            _logger.LogInformation($"SMTP Username: {_smtpConfig.Username}");
+            _logger.LogInformation($"SMTP Password: {_smtpConfig.Password}");
+            _logger.LogInformation($"SMTP Server: {_smtpConfig.Server}");
+            _logger.LogInformation($"SMTP Port: {_smtpConfig.Port}");
+            _logger.LogInformation($"SMTP EnableSsl: {_smtpConfig.EnableSsl}");
+
+
             // _logger.LogInformation($"Sending email to {recipient}:");
             // _logger.LogInformation($"Subject: {emailSubject}");
             // _logger.LogInformation($"Body: {emailBody}");

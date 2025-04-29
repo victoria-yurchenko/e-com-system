@@ -1,8 +1,9 @@
-﻿namespace Application.DTOs.Authentication
+﻿using System.Text.Json.Serialization;
+
+namespace Application.DTOs.Authentication
 {
-    public record LoginUserDto
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
-    }
+    public record LoginUserDto(
+        [property: JsonPropertyName("email")] string Email,
+        [property: JsonPropertyName("password")] string Password
+    );
 }
