@@ -15,16 +15,20 @@ namespace Application.Services.Verification
 
         public async Task<string> GenerateVerificationCodeAsync(Operation operation, string identifier)
         {
+            _logger.LogInformation("Application.Services.Verification.VerificationService.GenerateVerificationCodeAsync()");
+
             var verificationCode = VerificationCodeGenerator.GenerateCode();
             var cacheKey = GetCacheKey(operation, identifier);
 
             await _verificationCache.SaveAsync(cacheKey, verificationCode, TimeSpan.FromMinutes(15));
-            // _logger.LogInformation($"✅ Generated verification code for {verificationType} ({identifier}): {verificationCode}");
+            _logger.LogInformation($"Generated verification code for {operation} ({identifier}): {verificationCode}");
             return verificationCode;
         }
 
         public async Task<bool> ConfirmVerificationCodeAsync(Operation operation, string identifier, string verificationCode)
         {
+            _logger.LogInformation("Application.Services.Verification.VerificationService.ConfirmVerificationCodeAsync()");
+
             var cacheKey = GetCacheKey(operation, identifier);
             var storedCode = await _verificationCache.GetAsync(cacheKey);
 
@@ -32,14 +36,13 @@ namespace Application.Services.Verification
             {
                 await _verificationCache.RemoveAsync(cacheKey);
                 return true;
-                // _logger.LogWarning($"❌ Invalid verification code for {verificationType} ({identifier})");
             }
 
-            // _logger.LogInformation($"✅ {verificationType} verified successfully for {identifier}.");
+            _logger.LogInformation($"{verificationCode} verified successfully for {identifier}.");
             return false;
         }
 
-        private string GetCacheKey(Operation operation, string identifier)
+        private static string GetCacheKey(Operation operation, string identifier)
         {
             return $"{operation}:{identifier}";
         }

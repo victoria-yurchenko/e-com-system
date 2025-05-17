@@ -11,28 +11,15 @@ using Application.Interfaces.Verification;
 
 namespace Application.Services.Authentication
 {
-    public class AuthService : IAuthService
+    public class AuthService(IUserRepository userRepository, IPasswordHasher<User> passwordHasher, IJwtService jwtService, ExceptionFactory exceptionFactory, NotificationService notificationService, IVerificationService verificationService, IVerificationCache verificationCache) : IAuthService
     {
-        private readonly IUserRepository _userRepository;
-        private readonly IPasswordHasher<User> _passwordHasher;
-        private readonly IJwtService _jwtService;
-        // private readonly ILogger<AuthService> _logger = logger;
-        private readonly ExceptionFactory _exceptionFactory;
-        private readonly NotificationService _notificationService;
-        private readonly IVerificationService _verificationService;
-        private readonly IVerificationCache _verificationCache;
-
-
-        public AuthService(IUserRepository userRepository, IPasswordHasher<User> passwordHasher, IJwtService jwtService, ExceptionFactory exceptionFactory, NotificationService notificationService, IVerificationService verificationService, IVerificationCache verificationCache)
-        {
-            _userRepository = userRepository;
-            _passwordHasher = passwordHasher;
-            _jwtService = jwtService;
-            _exceptionFactory = exceptionFactory;
-            _notificationService = notificationService;
-            _verificationService = verificationService;
-            _verificationCache = verificationCache;
-        }
+        private readonly IUserRepository _userRepository = userRepository;
+        private readonly IPasswordHasher<User> _passwordHasher = passwordHasher;
+        private readonly IJwtService _jwtService = jwtService;
+        private readonly ExceptionFactory _exceptionFactory = exceptionFactory;
+        private readonly NotificationService _notificationService = notificationService;
+        private readonly IVerificationService _verificationService = verificationService;
+        private readonly IVerificationCache _verificationCache = verificationCache;
 
         public async Task<string> AuthenticateUserAsync(string identifier, string password)
         {
@@ -47,16 +34,12 @@ namespace Application.Services.Authentication
         }
 
 
-        public async Task<string> VerifyAccountAsync(string identifier)
+        public async Task<string> SendAccountVerificationCodeAsync(string identifier)
         {
             await CheckUserExist(identifier);
-            // Fill in the fields below to get started.
-
-            // var user = await CreateAndSaveUser(email, password);
             var verificationCode = await _verificationService.GenerateVerificationCodeAsync(Operation.Verification, identifier); ;
             // Save to Redis for 15 minutes
             await _verificationCache.SaveAsync(identifier, verificationCode, TimeSpan.FromMinutes(15));
-            // _logger.LogInformation($"User saved in the database. Email: {user.Email} Password: {user.UserName} ");
             await SendVerificationCodeAsync(identifier, verificationCode);
 
             return $"Code was sent to {identifier}";

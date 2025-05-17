@@ -29,9 +29,10 @@ namespace Application.Providers.Messaging
             _logger.LogInformation($"SMTP EnableSsl: {_smtpConfig.EnableSsl}");
 
 
-            // _logger.LogInformation($"Sending email to {recipient}:");
-            // _logger.LogInformation($"Subject: {emailSubject}");
-            // _logger.LogInformation($"Body: {emailBody}");
+            _logger.LogInformation($"Sending email to {recipient}:");
+            _logger.LogInformation($"Subject: {subject}");
+            _logger.LogInformation($"emailTemplate: {emailTemplate}");
+            _logger.LogInformation($"Body0: {body}");
 
             using var mailMessage = CreateMailMessage(subject, body, recipient);
             using var smtpClient = CreateSmtpClient();

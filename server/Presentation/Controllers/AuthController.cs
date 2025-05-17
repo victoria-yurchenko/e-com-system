@@ -10,30 +10,39 @@ namespace Presentation.Controllers
 {
     [Route("api/auth")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController(IAuthService authService, ILogger<AuthController> logger, ResponseService<string> responseService, ErrorMessagesConfig errorMessages) : ControllerBase
     {
-        private readonly IAuthService _authService;
-        private readonly ILogger<AuthController> _logger;
-        private readonly ResponseService<string> _responseService;
-        private readonly ErrorMessagesConfig _errorMessages;
+        private readonly IAuthService _authService = authService;
+        private readonly ILogger<AuthController> _logger = logger;
+        private readonly ResponseService<string> _responseService = responseService;
+        private readonly ErrorMessagesConfig _errorMessages = errorMessages;
 
-        public AuthController(IAuthService authService, ILogger<AuthController> logger, ResponseService<string> responseService, ErrorMessagesConfig errorMessages)
-        {
-            _authService = authService;
-            _logger = logger;
-            _responseService = responseService;
-            _errorMessages = errorMessages;
-        }
-
-        [HttpPost("verify-account")]
-        public async Task<IActionResult> VerifyAccountAsync([FromBody] IdentifierDto identifierDto)
+        [HttpPost("send-verify-account-code")]
+        public async Task<IActionResult> SendAccountVerificationCodeAsync([FromBody] IdentifierDto identifierDto)
         {
             _logger.LogInformation($"Verifying account with identifier, test: {identifierDto.Identifier}");
-            var verificationResult = await _authService.VerifyAccountAsync(identifierDto.Identifier);
+            var verificationResult = await _authService.SendAccountVerificationCodeAsync(identifierDto.Identifier);
             return _responseService.SuccessResponse(verificationResult, HttpStatusCodes.OK);
         }
 
-// TODO Add custom exceptions 
+        [HttpPost("verify-account")]
+        public async Task<IActionResult> ConfirmVerificationCodeAsync([FromBody] CodeVerificationDto codeVerificationDto)
+        {
+            var verificationResult = await _authService.ConfirmVerificationCodeAsync(codeVerificationDto.Identifier, codeVerificationDto.VerificationCode);
+            try
+            {
+                return !verificationResult
+                    ? _responseService.ClientErrorResponse("Invalid verification code", HttpStatusCodes.BadRequest)
+                    : _responseService.SuccessResponse("Correct verification code", HttpStatusCodes.OK);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Unexpected error during ConfirmVerificationCodeAsync: {ex.Message}");
+                return _responseService.ServerErrorResponse(_errorMessages.Unknown, HttpStatusCodes.InternalServerError);
+            }
+        }
+
+        // TODO Add custom exceptions 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterUserDto registerDto)
         {
