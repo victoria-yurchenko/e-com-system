@@ -1,3 +1,5 @@
+## WIP
+
 docker exec -it sqlserver /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Strong@Passw0rd -Q "SELECT name FROM sys.databases;"      
 name
 
