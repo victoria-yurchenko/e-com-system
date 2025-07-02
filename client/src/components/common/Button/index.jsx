@@ -2,9 +2,9 @@ import React from 'react';
 import { Button as MuiButton } from '@mui/material';
 
 const Button = ({
-  $variant = 'primary', 
+  $variant = 'primary',
   children,
-  sx={},
+  sx = {},
   ...otherProps
 }) => {
   return (
@@ -20,11 +20,15 @@ const Button = ({
         height: '65px',
         backgroundColor:
           $variant === 'secondary' ? 'secondary.main' : undefined,
-        border: $variant === 'secondary' ? '2px solid #5D6AD1' : undefined,
+        border: $variant === 'secondary' ? '2px solid #566777' : undefined,
         borderRadius: '10px',
         ':hover': {
-          backgroundColor: $variant === 'secondary' ? 'bg.light' : undefined,
-          borderWidth: '2px',
+          border: '2px solid #044646',
+          opacity: 1,
+        },
+        ':focus': {
+          border: '2px solid #044646',
+          opacity: 1,
         },
         ...sx,
       }}

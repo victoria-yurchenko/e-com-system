@@ -6,7 +6,7 @@ import { RegisterPage, LoginPage, HomePage, WelcomePage, NotFoundPlaceholder, Su
 
 const App = () => {
   return (
-    <Grid2>
+    <Grid2  sx={{ bgcolor: '#fffffc' }}>
       <TopBar />
       <BrowserRouter>
         <Routes>

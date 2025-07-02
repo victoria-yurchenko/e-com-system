@@ -14,7 +14,7 @@ const TextField = ({ sx, $variant, $type, ...otherProps }) => {
                 textTransform: 'none',
                 fontSize: '16px',
                 fontWeight: 600,
-                color: "#5D6AD1",
+                color: "#066767",
                 backgroundColor: $variant === 'secondary' ? 'secondary.main' : 'transparent',
                 ...sx,
             }}
@@ -22,19 +22,19 @@ const TextField = ({ sx, $variant, $type, ...otherProps }) => {
                 input: {
                     sx: {
                         fontFamily: 'Bahnschrift',
-                        border: '1px solid #5D6AD1',
+                        border: '1px solid #066767',
                         height: '65px',
                         fontSize: '14pt',
                         borderRadius: '10px',
-                        backgroundColor: 'transparent',
+                        backgroundColor: '#fffffc',
                         transition: 'opacity 0.3s, border-color 0.3s',
                         opacity: 0.5,
                         ':hover': {
-                            borderColor: '#3B4CCA',
+                            border: '2px solid #044646',
                             opacity: 1,
                         },
                         ':focus': {
-                            borderColor: '#2A3BB1',
+                            border: '2px solid #044646',
                             opacity: 1,
                         }
                     },

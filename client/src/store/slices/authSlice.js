@@ -1,11 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
 import { selectBaseURL } from './apiSlice';
+import axios from 'axios';
 import apiClient from '../api/axiosInstance';
 
 // User registration
 export const registerUser = createAsyncThunk(
-  'auth/registerUser',
+  'auth/register-user',
   async (userData, { rejectWithValue }) => {
     try {
       const response = await apiClient.post('/auth/register', userData);
@@ -16,24 +16,38 @@ export const registerUser = createAsyncThunk(
   }
 );
 
-// Verification of account
-export const verifyAccount = createAsyncThunk(
-  'auth/verify-account',
+// Send verification code
+export const sendVerificationCode = createAsyncThunk(
+  'auth/send-verify-account-code',
   async (identifierObj, { getState, rejectWithValue }) => {
     try {
       const baseURL = selectBaseURL(getState());
-      console.log("base url: ", baseURL);
-      const response = await axios.post(`${baseURL}/auth/verify-account`, identifierObj);
+      const response = await axios.post(`${baseURL}/auth/send-verify-account-code`, identifierObj);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || "Login failed");
+      return rejectWithValue(error.response?.data?.message || "Sending of verification code has failed");
+    }
+  }
+);
+
+// Verify code
+export const verifyCode = createAsyncThunk(
+  'auth/verify-account',
+  async (verificationObj, { getState, rejectWithValue }) => {
+    try {
+      const baseURL = selectBaseURL(getState());
+      console.log("base url: ", baseURL);
+      const response = await axios.post(`${baseURL}/auth/verify-account`, verificationObj);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || "Verification failed");
     }
   }
 );
 
 // User login
 export const loginUser = createAsyncThunk(
-  'auth/loginUser',
+  'auth/login-user',
   async (credentials, { getState, rejectWithValue }) => {
     try {
       const baseURL = selectBaseURL(getState());

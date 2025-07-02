@@ -1,47 +1,115 @@
+
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { Box, Container, Link, Grid2 } from '@mui/material';
 import { useTranslation } from 'react-i18next';
-import { Text } from "@components/common";
-import { registerUser } from '@store/slices/authSlice';
-import VerificationStep1 from './VerificationStep1';
-import VerificationStep2 from './VerificationStep2';
-import React, { useEffect, useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import { Button, Text, TextField } from "@components/common";
+import { sendVerificationCode, verifyCode } from '@store/slices/authSlice';
 
 const VerificationPage = () => {
-    const { t } = useTranslation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
-    const [verificationMethod, setVerificationMethod] = useState({
-        methodChoosed: false,
-        methods: {
-            email: false,
-        }
-    });
+    const [step, setStep] = useState(1);
+    const [identifier, setIdentifier] = useState('');
+    const [code, setCode] = useState('');
+    const [error, setError] = useState('');
 
-    useEffect(() => {
-        console.log(verificationMethod);
-    }, [verificationMethod]);
-
-    const [formInputs, setFormInputs] = useState({
-        identifier: '',
-    });
-
-    const handleChange = (e) => {
-        setFormInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    };
-
-    const onSubmit = async () => {
+    const handleNext = useCallback(() => setStep(2), []);
+    const handleSend = useCallback(async () => {
+        setError('');
         try {
-            const result = await dispatch(registerUser(formInputs.identifier)).unwrap();
-            console.log("Code was sent ", result);
-            navigate("/sign-up");
-        } catch (err) {
-            let errorMessage = err?.message || "An unknown error occurred. Please try again.";
-            alert(errorMessage);
+            await dispatch(sendVerificationCode({ identifier })).unwrap();
+            
+            setStep(3);
+        } catch (e) {
+            setError(e.message || t('verification.errorSend'));
         }
-    };
+    }, [dispatch, identifier, t]);
+    const handleVerify = useCallback(async () => {
+        setError('');
+        try {
+            await dispatch(verifyCode({ identifier, code })).unwrap();
+            navigate('/sign-up');
+        } catch (e) {
+            setError(e.message || t('verification.errorSend'))
+        }
+    }, [dispatch, identifier, code, navigate, t]);
+
+    // steps config
+    const steps = [
+        {
+            // TODO set translation in the fields
+            title: 'Choose verification method',
+            content:
+                <>
+                    <Button variant="outlined" color="primary" fullWidth onClick={handleNext} sx={{ marginBottom: 1 }}>
+                        <Text>{t("verification.methods.email.title")}</Text>
+                        <Box ml="auto">➜</Box>
+                    </Button>
+                    <Link href="/sign-in" underline="hover" sx={{ display: 'inline-block', mt: 1 }}>
+                        <Text>{t("signUpPage.hasAccount")}</Text>
+                    </Link>
+                </>
+        },
+        {
+            title: t("verification.methods.email.description"),
+            content:
+                <>
+                    <TextField
+                        label={t('general.email')}
+                        variant="outlined"
+                        color="primary"
+                        fullWidth
+                        value={identifier}
+                        onChange={e => setIdentifier(e.target.value)}
+                        placeholder={t("general.email") || "Email"}
+                    />
+                    {error && <Text color="error">{error}</Text>}
+                    <Button sx={{ mt: 2 }} type="submit" variant="contained" color="primary" fullWidth onClick={handleSend}>
+                        <Text>{t("general.sendCode")}</Text>
+                    </Button>
+                    <Box component="span" sx={{ display: 'inline-flex', gap: 1, mt: 1 }}>
+                        <Link href="/sign-in" underline="hover">
+                            <Text>{t("signUpPage.hasAccount")}</Text>
+                        </Link>
+                        <Link href="/verification" underline="hover">
+                            <Text>{t("general.goBack")}</Text>
+                        </Link>
+                    </Box>
+                </>
+        },
+        {
+            title: 'Please enter your verification code',
+            content:
+                <>
+                    <TextField
+                        label="Verification Code"
+                        variant="outlined"
+                        color="primary"
+                        fullWidth
+                        value=""
+                        onChange={e => setCode(e.target.value)}
+                        placeholder="Verification Code"
+                    />
+                    <Button sx={{ mt: 2 }} type="submit" variant="contained" color="primary" fullWidth onClick={handleVerify}>
+                        <Text>Submit Code</Text>
+                    </Button>
+                    <Box component="span" sx={{ display: 'inline-flex', gap: 1, mt: 1 }}>
+                        <Link href="/sign-in" underline="hover">
+                            <Text>{t("signUpPage.hasAccount")}</Text>
+                        </Link>
+                        <Link href="/verification" underline="hover">
+                            <Text>{t("general.goBack")}</Text>
+                        </Link>
+                    </Box>
+                </>
+        }
+    ];
+
+    const { title, content, field, action } = steps[step - 1];
 
     return (
         <Container maxWidth="sm">
@@ -54,16 +122,33 @@ const VerificationPage = () => {
                         alignItems: 'center',
                         textAlign: 'center'
                     }}>
-                        {!verificationMethod.methodChoosed ? (
-                            <VerificationStep1 onVerificationMethodChanged={setVerificationMethod} />
-                        ) : (
-                            <VerificationStep2 verificationMethod={verificationMethod} />
+                        <Text variant="h6" gutterBottom sx={{
+                            fontWeight: '600',
+                            opacity: '60%',
+                            mb: 1,
+                        }}>
+                            {title}
+                        </Text>
+
+                        {content || (
+                            <TextField
+                                label={field.label}
+                                type={field.type}
+                                fullWidth
+                                value={field.value}
+                                onChange={field.onChange}
+                            />
                         )}
-                        <Link href="/sign-in" underline="hover" sx={{ display: 'inline-block', mt: 1 }}>
-                            <Text>
-                                {t("signUpPage.hasAccount")}
-                            </Text>
-                        </Link>
+
+                        {error && <Text color="error">{error}</Text>}
+
+                        {action && (
+                            <Button variant="contained" fullWidth onClick={action.handler}>
+                                <Text>
+                                    {action.label}
+                                </Text>
+                            </Button>
+                        )}
                     </Box>
                 </Grid2>
             </Grid2>

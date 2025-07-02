@@ -3,3 +3,6 @@ email credantials:
     "Username": "giloggigiloggi@gmail.com",
     "Password": "Qwerty2001", 
   },
+
+  color palette for frontend:
+  https://www.color-hex.com/color-palette/18889

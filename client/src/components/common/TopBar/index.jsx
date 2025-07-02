@@ -10,12 +10,12 @@ const TopBar = () => {
     };
 
     return (
-        <Box sx={{ textAlign: 'center', backgroundColor: " #002c3d" }}>
+        <Box sx={{ textAlign: 'center', backgroundColor: "#066767" }}>
             <Container style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px' }}>
-                <Button onClick={() => changeLanguage('en')} sx={{ color: '#e9d8a6', fontFamily: 'Bahnschrift' }}>
+                <Button onClick={() => changeLanguage('en')} sx={{ color: '#fffffc', fontFamily: 'Bahnschrift' }}>
                     eng
                 </Button>
-                <Button onClick={() => changeLanguage('ru')} sx={{ color: '#e9d8a6', fontFamily: 'Bahnschrift' }}>
+                <Button onClick={() => changeLanguage('ru')} sx={{ color: '#fffffc', fontFamily: 'Bahnschrift' }}>
                     rus
                 </Button>
             </Container>
